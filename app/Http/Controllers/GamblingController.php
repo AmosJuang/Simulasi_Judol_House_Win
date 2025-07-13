@@ -21,86 +21,82 @@ class GamblingController extends Controller
 
     public function play(Request $request)
     {
-        $request->validate([
-            'bet_amount' => 'required|numeric|min:1000|max:100000',
-        ]);
+        try {
+            $request->validate([
+                'bet_amount' => 'required|numeric|min:10000|max:500000',
+            ]);
 
-        $user = Auth::user();
-        $betAmount = $request->bet_amount;
+            $user = Auth::user();
+            $betAmount = (int) $request->bet_amount;
 
-        if ($user->balance < $betAmount) {
-            if ($request->expectsJson()) {
+            // Check balance
+            if ($user->balance < $betAmount) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Saldo tidak mencukupi!'
-                ]);
+                    'message' => 'Saldo tidak mencukupi! Saldo Anda: Rp ' . number_format($user->balance)
+                ], 400);
             }
-            return redirect()->back()->with('error', 'Saldo tidak mencukupi!');
-        }
 
-        // Define slot symbols and their multipliers
-        $symbols = [
-            '🍒' => ['weight' => 30, 'multiplier' => 2],
-            '🍋' => ['weight' => 25, 'multiplier' => 3],
-            '🍊' => ['weight' => 20, 'multiplier' => 4],
-            '⭐' => ['weight' => 15, 'multiplier' => 10],
-            '💎' => ['weight' => 7, 'multiplier' => 25],
-            '👑' => ['weight' => 2, 'multiplier' => 100],
-            '🔥' => ['weight' => 1, 'multiplier' => 1000]
-        ];
+            // Define slot symbols and their multipliers
+            $symbols = [
+                '🍒' => ['weight' => 30, 'multiplier' => 2],
+                '🍋' => ['weight' => 25, 'multiplier' => 3],
+                '🍊' => ['weight' => 20, 'multiplier' => 4],
+                '⭐' => ['weight' => 15, 'multiplier' => 10],
+                '💎' => ['weight' => 7, 'multiplier' => 25],
+                '👑' => ['weight' => 2, 'multiplier' => 100],
+                '🔥' => ['weight' => 1, 'multiplier' => 1000]
+            ];
 
-        // Generate slot result
-        $isWin = false;
-        $multiplier = 0;
-        $slotResult = [];
+            // Generate slot result
+            $isWin = false;
+            $multiplier = 0;
+            $slotResult = [];
 
-        // Check if admin has set forced result for this user
-        if ($user->forced_result !== null) {
-            $isWin = $user->forced_result == 'win';
-            // Reset forced result after use
-            $user->forced_result = null;
-            
-            if ($isWin) {
-                // Force a winning combination
-                $winningSymbol = $this->getRandomSymbol($symbols, true);
-                $slotResult = [$winningSymbol, $winningSymbol, $winningSymbol];
-                $multiplier = $symbols[$winningSymbol]['multiplier'];
+            // Check if admin has set forced result for this user
+            if ($user->forced_result !== null) {
+                $isWin = $user->forced_result == 'win';
+                // Reset forced result after use
+                $user->forced_result = null;
+                
+                if ($isWin) {
+                    // Force a winning combination
+                    $winningSymbol = $this->getRandomSymbol($symbols, true);
+                    $slotResult = [$winningSymbol, $winningSymbol, $winningSymbol];
+                    $multiplier = $symbols[$winningSymbol]['multiplier'];
+                } else {
+                    // Force a losing combination
+                    $slotResult = $this->generateLosingCombination($symbols);
+                }
             } else {
-                // Force a losing combination
-                $slotResult = $this->generateLosingCombination($symbols);
+                // Normal random result
+                $slotResult = $this->generateSlotResult($symbols);
+                
+                // Check for winning combination (all three symbols match)
+                if ($slotResult[0] === $slotResult[1] && $slotResult[1] === $slotResult[2]) {
+                    $isWin = true;
+                    $multiplier = $symbols[$slotResult[0]]['multiplier'];
+                }
             }
-        } else {
-            // Normal random result
-            $slotResult = $this->generateSlotResult($symbols);
+
+            // Calculate payout
+            $payout = 0;
+            if ($isWin) {
+                $payout = $betAmount * $multiplier;
+                $user->balance -= $betAmount;
+                $user->balance += $payout;
+                $user->total_wins += 1;
+                $message = "🎉 JACKPOT! Anda menang Rp " . number_format($payout) . "! (Multiplier: {$multiplier}x)";
+            } else {
+                $user->balance -= $betAmount;
+                $user->total_losses += 1;
+                $message = "💀 KALAH! Anda kehilangan Rp " . number_format($betAmount) . "!";
+            }
             
-            // Check for winning combination (all three symbols match)
-            if ($slotResult[0] === $slotResult[1] && $slotResult[1] === $slotResult[2]) {
-                $isWin = true;
-                $multiplier = $symbols[$slotResult[0]]['multiplier'];
-            }
-        }
+            $user->total_attempts += 1;
+            $user->last_played_at = now();
+            $user->save();
 
-        // Calculate payout
-        $payout = 0;
-        if ($isWin) {
-            $payout = $betAmount * $multiplier;
-            $user->balance -= $betAmount;
-            $user->balance += $payout;
-            $user->total_wins += 1;
-            $message = "🎉 JACKPOT! Anda menang Rp " . number_format($payout) . "! (Multiplier: {$multiplier}x)";
-            $alertType = 'success';
-        } else {
-            $user->balance -= $betAmount;
-            $user->total_losses += 1;
-            $message = "💀 KALAH! Anda kehilangan Rp " . number_format($betAmount) . "!";
-            $alertType = 'error';
-        }
-        
-        $user->total_attempts += 1;
-        $user->last_played_at = now();
-        $user->save();
-
-        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'win' => $isWin,
@@ -114,9 +110,14 @@ class GamblingController extends Controller
                 'total_losses' => $user->total_losses,
                 'message' => $message
             ]);
-        }
 
-        return redirect()->back()->with($alertType, $message);
+        } catch (\Exception $e) {
+            \Log::error('Gambling play error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server! Coba lagi.'
+            ], 500);
+        }
     }
 
     private function getRandomSymbol($symbols, $preferHighValue = false)
@@ -274,5 +275,175 @@ class GamblingController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', $message);
+    }
+    
+    public function roulette()
+    {
+        $user = Auth::user();
+        return view('gambling.roulette', compact('user'));
+    }
+
+    public function playRoulette(Request $request)
+    {
+        $request->validate([
+            'bet_type' => 'required|string|in:number,color,parity,range',
+            'bet_value' => 'required|string',
+            'bet_amount' => 'required|numeric|min:1000|max:1000000000000',
+            'payout_ratio' => 'required|numeric|min:1|max:35',
+        ]);
+
+        $user = Auth::user();
+        $betAmount = (int) $request->bet_amount;
+
+        if ($betAmount < 15000) {
+            return response() -> json ([
+                'success' => false,
+                'message' => 'Minimal taruhan adalah 15 ribu'
+            ], 422);
+        }
+
+        if ($user->balance < $betAmount) {
+            return response()->json([    
+                'success' => false,
+                'message' => 'Saldo tidak mencukupi!'
+            ]);
+        }
+
+        // Generate winning number (0-36)
+        $winningNumber = 0;
+        $isWin = false;
+
+        // Check if admin has set forced result for this user
+        if ($user->forced_result !== null) {
+            $isWin = $user->forced_result == 'win';
+            // Reset forced result after use
+            $user->forced_result = null;
+            
+            if ($isWin) {
+                // Force a winning number based on bet type
+                $winningNumber = $this->generateWinningNumber($request->bet_type, $request->bet_value);
+            } else {
+                // Force a losing number
+                $winningNumber = $this->generateLosingNumber($request->bet_type, $request->bet_value);
+            }
+        } else {
+            // Normal random result with house edge
+            $winningNumber = $this->generateRouletteNumber();
+            $isWin = $this->checkRouletteWin($winningNumber, $request->bet_type, $request->bet_value);
+        }
+
+        // Determine winning color
+        $winningColor = $this->getNumberColor($winningNumber);
+
+        // Calculate payout
+        $payout = 0;
+        if ($isWin) {
+            $payout = $betAmount * ($request->payout_ratio + 1);
+            $user->balance -= $betAmount;
+            $user->balance += $payout;
+            $user->total_wins += 1;
+            $message = "🎉 MENANG! Nomor {$winningNumber} ({$winningColor})";
+            $alertType = 'success';
+        } else {
+            $user->balance -= $betAmount;
+            $user->total_losses += 1;
+            $message = "💸 KALAH! Nomor {$winningNumber} ({$winningColor})";
+            $alertType = 'error';
+        }
+
+        $user->total_attempts += 1;
+        $user->last_played_at = now();
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'win' => $isWin,
+            'winning_number' => $winningNumber,
+            'winning_color' => $winningColor,
+            'bet_amount' => $betAmount,
+            'payout' => $payout,
+            'payout_ratio' => $request->payout_ratio,
+            'new_balance' => $user->balance,
+            'total_attempts' => $user->total_attempts,
+            'total_wins' => $user->total_wins,
+            'total_losses' => $user->total_losses,
+            'message' => $message
+        ]);
+    }
+
+    private function generateRouletteNumber()
+    {
+        return rand(0, 36);
+    }
+
+    private function generateWinningNumber($betType, $betValue)
+    {
+        switch ($betType) {
+            case 'number':
+                return (int) $betValue;
+            case 'color':
+                $redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+                if ($betValue === 'red') {
+                    return $redNumbers[array_rand($redNumbers)];
+                } elseif ($betValue === 'black') {
+                    $blackNumbers = array_diff(range(1, 36), $redNumbers);
+                    return array_values($blackNumbers)[array_rand($blackNumbers)];
+                }
+                break;
+            case 'parity':
+                if ($betValue === 'even') {
+                    $evenNumbers = range(2, 36, 2);
+                    return $evenNumbers[array_rand($evenNumbers)];
+                } else {
+                    $oddNumbers = range(1, 35, 2);
+                    return $oddNumbers[array_rand($oddNumbers)];
+                }
+                break;
+            case 'range':
+                if ($betValue === 'low') {
+                    return rand(1, 18);
+                } else {
+                    return rand(19, 36);
+                }
+                break;
+        }
+        return rand(1, 36);
+    }
+
+    private function generateLosingNumber($betType, $betValue)
+    {
+        do {
+            $number = rand(0, 36);
+        } while ($this->checkRouletteWin($number, $betType, $betValue));
+        
+        return $number;
+    }
+
+    private function checkRouletteWin($winningNumber, $betType, $betValue)
+    {
+        switch ($betType) {
+            case 'number':
+                return $winningNumber == (int) $betValue;
+            case 'color':
+                $numberColor = $this->getNumberColor($winningNumber);
+                return $numberColor === $betValue;
+            case 'parity':
+                if ($winningNumber === 0) return false;
+                $isEven = $winningNumber % 2 === 0;
+                return ($betValue === 'even' && $isEven) || ($betValue === 'odd' && !$isEven);
+            case 'range':
+                if ($winningNumber === 0) return false;
+                return ($betValue === 'low' && $winningNumber >= 1 && $winningNumber <= 18) ||
+                       ($betValue === 'high' && $winningNumber >= 19 && $winningNumber <= 36);
+        }
+        return false;
+    }
+
+    private function getNumberColor($number)
+    {
+        if ($number === 0) return 'green';
+        
+        $redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+        return in_array($number, $redNumbers) ? 'red' : 'black';
     }
 }

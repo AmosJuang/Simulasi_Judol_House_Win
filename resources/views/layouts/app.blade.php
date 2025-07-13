@@ -24,6 +24,107 @@
             color: #ffffff;
             font-family: 'Roboto', sans-serif;
             overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Fix container overflow */
+        .container, .container-fluid {
+            max-width: 100%;
+            overflow-x: hidden;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        /* Ensure all content stays within viewport */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Fix row overflow */
+        .row {
+            margin-left: -15px;
+            margin-right: -15px;
+            overflow-x: hidden;
+        }
+
+        .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, 
+        .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+        .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
+        .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+        .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
+        .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+        .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+        .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+            padding-left: 15px;
+            padding-right: 15px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Mobile-first responsive adjustments */
+        @media (max-width: 768px) {
+            .container, .container-fluid {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .row {
+                margin-left: -10px;
+                margin-right: -10px;
+            }
+            
+            [class*="col-"] {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            /* Fix sidebar on mobile */
+            .sidebar-promo {
+                display: none !important;
+            }
+            
+            /* Adjust navbar for mobile */
+            .navbar-brand {
+                font-size: 1.5rem;
+                padding: 0.5rem 0;
+            }
+            
+            .nav-link {
+                padding: 8px 12px !important;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container, .container-fluid {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .row {
+                margin-left: -5px;
+                margin-right: -5px;
+            }
+            
+            [class*="col-"] {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            /* Hide ads on very small screens */
+            .left-ads, .right-ads {
+                display: none !important;
+            }
+            
+            /* Stack elements vertically on small screens */
+            .d-flex {
+                flex-direction: column !important;
+            }
+            
+            .d-flex > * {
+                margin-bottom: 10px !important;
+            }
         }
 
         /* Animated Background */
@@ -50,10 +151,11 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: -1;
+            overflow: hidden;
         }
 
         .floating-coin {
@@ -74,11 +176,14 @@
             background: linear-gradient(90deg, #ff6b35, #ff0000, #ff6b35);
             background-size: 200% 100%;
             animation: slideGradient 3s ease infinite;
-            padding: 8px 0;
+            padding: 8px 15px;
             text-align: center;
             font-weight: bold;
             font-size: 14px;
             box-shadow: 0 2px 10px rgba(255, 0, 0, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         @keyframes slideGradient {
@@ -257,12 +362,13 @@
             background: linear-gradient(45deg, #ff0000, #ff6b35);
             color: #ffd700;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             border-radius: 15px;
             margin: 20px 0;
             border: 3px solid #ffd700;
             position: relative;
             overflow: hidden;
+            word-wrap: break-word;
         }
 
         .jackpot-display::before {
@@ -282,16 +388,29 @@
         }
 
         .jackpot-amount {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             animation: countUp 2s ease infinite;
+            word-break: break-all;
         }
 
         @keyframes countUp {
             0%, 90% { transform: scale(1); }
             95% { transform: scale(1.1); }
             100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .jackpot-amount {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .jackpot-amount {
+                font-size: 1.2rem;
+            }
         }
 
         /* Buttons */
@@ -362,16 +481,19 @@
             padding: 10px 0;
             overflow: hidden;
             white-space: nowrap;
+            width: 100%;
         }
 
         .ticker-content {
             display: inline-block;
             animation: scroll 30s linear infinite;
+            white-space: nowrap;
         }
 
-        @keyframes scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        @media (max-width: 768px) {
+            .ticker-content {
+                animation: scroll 20s linear infinite;
+            }
         }
 
         /* Falling Gold Animation */
@@ -379,7 +501,7 @@
             position: fixed;
             width: 30px;
             height: 30px;
-            background-image: url('{{ asset('public/Images/Big_Gold_Pile.png') }}');
+            background-image: url('{{ asset("public/Images/Big_Gold_Pile.png") }}');
             background-size: cover;
             z-index: 1000;
             pointer-events: none;
@@ -687,22 +809,118 @@
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0.3; }
         }
+
+        /* Enhanced Close Buttons for Ads */
+        .ads-close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff0000;
+            color: #ffffff;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 1002;
+            transition: all 0.3s ease;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .ads-close-btn:hover {
+            background: #cc0000;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        .demo-close-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff0000;
+            color: #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 10px;
+            z-index: 1002;
+            transition: all 0.3s ease;
+            border: 1px solid #ffd700;
+        }
+
+        .demo-close-btn:hover {
+            background: #cc0000;
+            transform: scale(1.2);
+        }
+
+        /* Jackpot Ticker Close Button */
+        .jackpot-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #ff0000, #ffd700, #ff0000);
+            color: #fff;
+            padding: 5px 0;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            z-index: 1100;
+            animation: tickerGlow 2s infinite alternate;
+        }
+
+        .ticker-close-btn {
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            border: 1px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+
+        .ticker-close-btn:hover {
+            background: rgba(255, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
     </style>
     
     @yield('styles')
 </head>
 <body>
     <!-- Jackpot Ticker -->
-    <div class="jackpot-ticker">
+    <div class="jackpot-ticker" id="jackpotTicker">
+        <div class="ticker-close-btn" onclick="closeJackpotTicker()">
+            <i class="fas fa-times"></i>
+        </div>
         <span class="blink">🚨 JACKPOT ALERT! 🚨</span>
         &nbsp;&nbsp;
-        <span>Player "Ahmad****" just won Rp 500.000.000!</span>
+        <span>Player "Ahmad****" meraih Rp 500.000.000!</span>
         &nbsp;&nbsp;
-        <span class="blink">🔥 YOUR TURN NEXT! 🔥</span>
+        <span class="blink">🔥 GILIRAN ANDA SELANJUTNYA! 🔥</span>
     </div>
 
     <!-- Left Side Advertisements -->
-    <div class="left-ads">
+    <div class="left-ads" id="leftAds">
+        <div class="ads-close-btn" onclick="closeLeftAds()">
+            <i class="fas fa-times"></i>
+        </div>
         <div class="ad-banner" style="top: 100px;">
             <div class="emoji">🎰</div>
             <h6>MEGA SLOT</h6>
@@ -729,7 +947,10 @@
     </div>
 
     <!-- Right Side Advertisements -->
-    <div class="right-ads">
+    <div class="right-ads" id="rightAds">
+        <div class="ads-close-btn" onclick="closeRightAds()">
+            <i class="fas fa-times"></i>
+        </div>
         <div class="ad-banner" style="top: 80px;">
             <div class="emoji">💰</div>
             <h6 class="blink-fast">JACKPOT</h6>
@@ -749,8 +970,8 @@
         <div class="ad-banner" style="top: 520px; animation-delay: 1.2s;">
             <div class="emoji">🏆</div>
             <h6>VIP BONUS</h6>
-            <div class="big-text">100%</div>
-            <h6 class="blink">DEPOSIT</h6>
+            <div class="big-text">100K</div>
+            <h6 class="blink">GRATIS</h6>
             <small style="color: #00ff00;">NEW MEMBER</small>
         </div>
 
@@ -764,7 +985,10 @@
     </div>
 
     <!-- Demo Slot Machine -->
-    <div class="slot-win-demo">
+    <div class="slot-win-demo" id="slotDemo">
+        <div class="demo-close-btn" onclick="closeSlotDemo()">
+            <i class="fas fa-times"></i>
+        </div>
         <div class="slot-symbols">
             <span class="slot-symbol">🔥</span>
             <span class="slot-symbol">🔥</span>
@@ -1089,6 +1313,9 @@
                 const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
                 
                 ticker.innerHTML = `
+                    <div class="ticker-close-btn" onclick="closeJackpotTicker()">
+                        <i class="fas fa-times"></i>
+                    </div>
                     <span class="blink">🚨 JACKPOT ALERT! 🚨</span>
                     &nbsp;&nbsp;
                     <span>Player "${randomPlayer}" just won Rp ${randomAmount}!</span>
@@ -1097,10 +1324,64 @@
                 `;
             }
         }
-        
+
+        // Function to close sidebar promo
+        function closeSidebarPromo() {
+            const sidebar = document.getElementById('sidebarPromo');
+            sidebar.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                sidebar.style.display = 'none';
+            }, 300);
+            localStorage.setItem('sidebarPromoClosed', 'true');
+        }
+
+        // Function to close demo slot
+        function closeSlotDemo() {
+            const slotDemo = document.getElementById('slotDemo');
+            slotDemo.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                slotDemo.style.display = 'none';
+            }, 300);
+            localStorage.setItem('slotDemoClosed', 'true');
+        }
+
+        // Function to close jackpot ticker
+        function closeJackpotTicker() {
+            const ticker = document.getElementById('jackpotTicker');
+            ticker.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                ticker.style.display = 'none';
+            }, 300);
+            localStorage.setItem('jackpotTickerClosed', 'true');
+        }
+
+        // Check for closed ads on page load
+        function checkClosedAds() {
+            if (localStorage.getItem('leftAdsClosed') === 'true') {
+                const leftAds = document.getElementById('leftAds');
+                if (leftAds) leftAds.style.display = 'none';
+            }
+            
+            if (localStorage.getItem('rightAdsClosed') === 'true') {
+                const rightAds = document.getElementById('rightAds');
+                if (rightAds) rightAds.style.display = 'none';
+            }
+            
+            if (localStorage.getItem('slotDemoClosed') === 'true') {
+                const slotDemo = document.getElementById('slotDemo');
+                if (slotDemo) slotDemo.style.display = 'none';
+            }
+            
+            if (localStorage.getItem('jackpotTickerClosed') === 'true') {
+                const ticker = document.getElementById('jackpotTicker');
+                if (ticker) ticker.style.display = 'none';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             animateJackpot();
             checkSidebarPromo();
+            checkClosedAds(); // This function is now in ad-closer.js
             
             // Start win notifications every 8 seconds
             setInterval(createWinNotification, 8000);
@@ -1115,5 +1396,8 @@
     </script>
     
     @yield('scripts')
+    <!-- Load JavaScript files in correct order -->
+    <script src="{{ asset('js/roulette.js') }}"></script>
+    <script src="{{ asset('js/ad-closer.js') }}"></script>
 </body>
 </html>

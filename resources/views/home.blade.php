@@ -102,13 +102,13 @@
                         <div class="col-md-6 mb-3">
                             <div class="game-item">
                                 <div class="game-thumbnail">
-                                    <div class="game-icon">⚡</div>
+                                    <div class="game-icon">🎯</div>
                                 </div>
                                 <div class="game-info">
-                                    <h5>Zeus Lightning</h5>
-                                    <p>RTP: 96% | Bonus: 25x</p>
-                                    <a href="#" class="btn btn-secondary btn-sm disabled">
-                                        <i class="fas fa-clock"></i> Segera Hadir
+                                    <h5>Spin to Win !!! </h5>
+                                    <p>RTP: 97% | Payout: 35:1</p>
+                                    <a href="{{ route('gambling.roulette') }}" class="btn btn-casino btn-sm">
+                                        <i class="fas fa-play"></i> Main Sekarang
                                     </a>
                                 </div>
                             </div>
@@ -359,6 +359,8 @@
     align-items: center;
     transition: all 0.3s ease;
     height: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .game-item:hover {
@@ -405,6 +407,8 @@
     border-radius: 0 10px 10px 0;
     display: flex;
     align-items: center;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .activity-icon {
@@ -525,17 +529,168 @@
         font-size: 2rem;
     }
 }
-</style>
-<style>
+
 /* Fix any overflow issues */
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 .row {
     margin-left: -12px;
     margin-right: -12px;
+    overflow-x: hidden;
 }
 
 .col-md-3, .col-md-6, .col-lg-4, .col-lg-8 {
     padding-left: 12px;
     padding-right: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Better mobile handling */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    
+    .col-md-3, .col-md-6, .col-lg-4, .col-lg-8 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    /* Stack cards vertically on mobile */
+    .dashboard-card {
+        margin-bottom: 15px;
+    }
+    
+    /* Fix text overflow */
+    .dashboard-card h3 {
+        font-size: 1.2rem;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    .col-md-3, .col-md-6, .col-lg-4, .col-lg-8 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    /* Further reduce text size */
+    .dashboard-card h3 {
+        font-size: 1rem;
+    }
+    
+    .dashboard-card p {
+        font-size: 0.8rem;
+    }
+}
+
+/* Fix welcome header */
+.welcome-header {
+    padding: 20px 15px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 107, 53, 0.15));
+    border-radius: 20px;
+    margin-bottom: 30px;
+    border: 2px solid #ffd700;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.casino-welcome {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .casino-welcome {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .casino-welcome {
+        font-size: 1.3rem;
+    }
+}
+
+/* Fix game items overflow */
+.game-item {
+    background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+@media (max-width: 576px) {
+    .game-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .game-thumbnail {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Fix activity items */
+.activity-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid #ffd700;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+@media (max-width: 576px) {
+    .activity-item {
+        padding: 10px;
+    }
+    
+    .activity-content h6 {
+        font-size: 0.85rem;
+    }
+    
+    .activity-content p {
+        font-size: 0.75rem;
+    }
 }
 </style>
 @endsection

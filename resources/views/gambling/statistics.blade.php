@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>📊 Statistik Gambling - House Analytics</h4>
+                    <h4>📊 Statistik Taruhan - Hasil Analytics</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -16,23 +16,23 @@
                             <h5>👥 User Statistics</h5>
                             <table class="table table-striped">
                                 <tr>
-                                    <td>Total Users</td>
+                                    <td>Jumlah Player</td>
                                     <td><strong>{{ number_format($totalUsers ?? 0) }}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Total Attempts</td>
+                                    <td>Jumlah Percobaan </td>
                                     <td><strong>{{ number_format($totalAttempts ?? 0) }}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Total Wins</td>
+                                    <td>Jumlah Kemenangan </td>
                                     <td><strong class="text-success">{{ number_format($totalWins ?? 0) }}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Total Losses</td>
+                                    <td>Jumlah kekalahan</td>
                                     <td><strong class="text-danger">{{ number_format($totalLosses ?? 0) }}</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Overall Win Rate</td>
+                                    <td>Rasio menang dan kalah </td>
                                     <td><strong class="{{ ($overallWinRate ?? 0) > 50 ? 'text-danger' : 'text-success' }}">{{ $overallWinRate ?? 0 }}%</strong></td>
                                 </tr>
                             </table>
@@ -74,15 +74,15 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <h6>Current Balance</h6>
+                                            <h6>Saldo saat ini </h6>
                                             <h4 class="text-primary">Rp {{ number_format($user->balance ?? 0) }}</h4>
                                         </div>
                                         <div class="col-md-3">
-                                            <h6>Total Attempts</h6>
+                                            <h6>Jumlah Percobaan </h6>
                                             <h4>{{ $user->total_attempts ?? 0 }}</h4>
                                         </div>
                                         <div class="col-md-3">
-                                            <h6>Your Win Rate</h6>
+                                            <h6>Tinkat kemenangan </h6>
                                             <h4 class="{{ ($user->total_attempts ?? 0) > 0 && (($user->total_wins ?? 0) / $user->total_attempts) > 0.5 ? 'text-success' : 'text-danger' }}">
                                                 {{ ($user->total_attempts ?? 0) > 0 ? round((($user->total_wins ?? 0) / $user->total_attempts) * 100, 2) : 0 }}%
                                             </h4>

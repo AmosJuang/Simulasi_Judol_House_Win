@@ -8,7 +8,7 @@
                 <i class="fas fa-crown"></i> CASINO ADMIN PANEL
             </div>
             <div class="casino-subtitle">
-                Monitor and manage your casino operations
+                Atur dan Monitor Situasi Casino Anda
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-users"></i> Total Players
+                    <i class="fas fa-users"></i> Jumlah Pemain
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning">{{ $totalUsers }}</h2>
@@ -42,7 +42,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-coins"></i> Total Balance
+                    <i class="fas fa-coins"></i> Saldo Pemain 
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning">Rp {{ number_format($totalBalance) }}</h2>
@@ -52,7 +52,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-gamepad"></i> Total Games
+                    <i class="fas fa-gamepad"></i> Jumlah Permainan 
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning">{{ number_format($totalGames) }}</h2>
@@ -62,7 +62,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-trophy"></i> Win Rate
+                    <i class="fas fa-trophy"></i> Presentase Kemenangan
                 </div>
                 <div class="card-body text-center">
                     <h2 class="text-warning">{{ $totalGames > 0 ? number_format(($totalWins / $totalGames) * 100, 2) : 0 }}%</h2>
@@ -86,9 +86,9 @@
                                     <th><i class="fas fa-hashtag"></i> Rank</th>
                                     <th><i class="fas fa-user"></i> Player</th>
                                     <th><i class="fas fa-envelope"></i> Email</th>
-                                    <th><i class="fas fa-coins"></i> Balance</th>
-                                    <th><i class="fas fa-gamepad"></i> Games</th>
-                                    <th><i class="fas fa-trophy"></i> W/L</th>
+                                    <th><i class="fas fa-coins"></i> Saldo</th>
+                                    <th><i class="fas fa-gamepad"></i> Permainan</th>
+                                    <th><i class="fas fa-trophy"></i> M/K</th>
                                     <th><i class="fas fa-percentage"></i> Win Rate</th>
                                     <th><i class="fas fa-magic"></i> Forced Result</th>
                                     <th><i class="fas fa-cogs"></i> Actions</th>
@@ -312,25 +312,138 @@ document.addEventListener('DOMContentLoaded', function() {
     padding: 20px;
 }
 
-.form-select {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border: 2px solid #ffd700 !important;
-    color: #ffffff !important;
-    border-radius: 10px !important;
-    padding: 12px 15px !important;
+/* Add responsive containers */
+.container {
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-.form-select:focus {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: #ffd700 !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
-    color: #ffffff !important;
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+    overflow-x: hidden;
 }
 
-.form-select option {
-    background: #2d2d2d !important;
-    color: #ffffff !important;
-    padding: 10px !important;
+[class*="col-"] {
+    padding-left: 15px;
+    padding-right: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Fix table overflow */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.table {
+    min-width: 800px;
+    word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    
+    [class*="col-"] {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .table {
+        font-size: 0.8rem;
+        min-width: 600px;
+    }
+    
+    .table th, .table td {
+        padding: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    [class*="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .table {
+        font-size: 0.7rem;
+        min-width: 500px;
+    }
+    
+    .table th, .table td {
+        padding: 0.3rem;
+        font-size: 0.75rem;
+    }
+    
+    .casino-title {
+        font-size: 1.8rem;
+    }
+    
+    .casino-subtitle {
+        font-size: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .card-header {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    .card-body {
+        padding: 10px;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+    }
+}
+
+/* Fix modal overflow */
+.modal-dialog {
+    max-width: 95%;
+    margin: 10px auto;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    word-wrap: break-word;
 }
 
 .btn-close-white {
