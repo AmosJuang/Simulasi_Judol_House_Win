@@ -837,7 +837,7 @@
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
         }
 
-        .demo-close-btn {
+        .promo-card-close {
             position: absolute;
             top: -8px;
             right: -8px;
@@ -856,70 +856,9 @@
             border: 1px solid #ffd700;
         }
 
-        .demo-close-btn:hover {
+        .promo-card-close:hover {
             background: #cc0000;
             transform: scale(1.2);
-        }
-
-        /* Jackpot Ticker Close Button */
-        .jackpot-ticker {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, #ff0000, #ffd700, #ff0000);
-            color: #fff;
-            padding: 5px 0;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
-            z-index: 1100;
-            animation: tickerGlow 2s infinite alternate;
-        }
-
-        .ticker-close-btn {
-            position: absolute;
-            top: 2px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
-            border: 1px solid #ffd700;
-            transition: all 0.3s ease;
-        }
-
-        .ticker-close-btn:hover {
-            background: rgba(255, 0, 0, 0.8);
-            transform: scale(1.1);
-        }
-
-        /* Winning number highlight effect */
-        .winning-highlight {
-            background: linear-gradient(45deg, #ffd700, #ffed4a) !important;
-            color: #000 !important;
-            transform: scale(1.3) !important;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 1) !important;
-            border: 2px solid #ff0000 !important;
-            animation: winningPulse 0.5s ease-in-out infinite alternate !important;
-            z-index: 15 !important;
-        }
-        
-        @keyframes winningPulse {
-            0% { 
-                box-shadow: 0 0 20px rgba(255, 215, 0, 1);
-                transform: scale(1.3);
-            }
-            100% { 
-                box-shadow: 0 0 30px rgba(255, 0, 0, 1);
-                transform: scale(1.4);
-            }
         }
 
     </style>
@@ -930,10 +869,10 @@
     <!-- Left Ads - Hidden on admin and roulette pages -->
     @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
     <div id="leftAds" class="floating-ads left-ads">
-        <div class="ads-close-btn" onclick="closeLeftAds()">
-            <i class="fas fa-times"></i>
-        </div>
-        <div class="ad-banner" style="top: 100px;">
+        <div class="ad-banner" style="top: 100px;" id="leftAd1">
+            <div class="ads-close-btn" onclick="closeIndividualAd('leftAd1')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">🎰</div>
             <h6>MEGA SLOT</h6>
             <div class="big-text blink-fast">777</div>
@@ -941,7 +880,10 @@
             <small style="color: #ffd700;">WIN UP TO 1000x!</small>
         </div>
 
-        <div class="ad-banner" style="top: 320px; animation-delay: 0.5s;">
+        <div class="ad-banner" style="top: 320px; animation-delay: 0.5s;" id="leftAd2">
+            <div class="ads-close-btn" onclick="closeIndividualAd('leftAd2')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">💎</div>
             <h6>DIAMOND</h6>
             <div class="big-text">RUSH</div>
@@ -949,7 +891,10 @@
             <small style="color: #00ff00;">RTP 98%</small>
         </div>
 
-        <div class="ad-banner" style="top: 540px; animation-delay: 1s;">
+        <div class="ad-banner" style="top: 540px; animation-delay: 1s;" id="leftAd3">
+            <div class="ads-close-btn" onclick="closeIndividualAd('leftAd3')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">🔥</div>
             <h6>HOT SLOT</h6>
             <div class="big-text blink">BONUS</div>
@@ -962,10 +907,10 @@
     <!-- Right Ads - Hidden on admin and roulette pages -->
     @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
     <div id="rightAds" class="floating-ads right-ads">
-        <div class="ads-close-btn" onclick="closeRightAds()">
-            <i class="fas fa-times"></i>
-        </div>
-        <div class="ad-banner" style="top: 80px;">
+        <div class="ad-banner" style="top: 80px;" id="rightAd1">
+            <div class="ads-close-btn" onclick="closeIndividualAd('rightAd1')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">💰</div>
             <h6 class="blink-fast">JACKPOT</h6>
             <div class="big-text">1.2B</div>
@@ -973,7 +918,10 @@
             <small style="color: #00ff00;">GROWING NOW!</small>
         </div>
 
-        <div class="ad-banner" style="top: 300px; animation-delay: 0.7s;">
+        <div class="ad-banner" style="top: 300px; animation-delay: 0.7s;" id="rightAd2">
+            <div class="ads-close-btn" onclick="closeIndividualAd('rightAd2')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">⚡</div>
             <h6>LIGHTNING</h6>
             <div class="big-text blink">FAST</div>
@@ -981,7 +929,10 @@
             <small style="color: #ffd700;">1-3 MINUTES</small>
         </div>
 
-        <div class="ad-banner" style="top: 520px; animation-delay: 1.2s;">
+        <div class="ad-banner" style="top: 520px; animation-delay: 1.2s;" id="rightAd3">
+            <div class="ads-close-btn" onclick="closeIndividualAd('rightAd3')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">🏆</div>
             <h6>VIP BONUS</h6>
             <div class="big-text">100K</div>
@@ -989,7 +940,10 @@
             <small style="color: #00ff00;">NEW MEMBER</small>
         </div>
 
-        <div class="ad-banner" style="top: 740px; animation-delay: 1.5s;">
+        <div class="ad-banner" style="top: 740px; animation-delay: 1.5s;" id="rightAd4">
+            <div class="ads-close-btn" onclick="closeIndividualAd('rightAd4')">
+                <i class="fas fa-times"></i>
+            </div>
             <div class="emoji">🎯</div>
             <h6>LUCKY SPIN</h6>
             <div class="big-text blink-fast">WIN</div>
@@ -1037,15 +991,24 @@
         <div class="promo-close-btn" onclick="closeSidebarPromo()">
             <i class="fas fa-times"></i>
         </div>
-        <div class="promo-card animate__animated animate__bounceIn">
+        <div class="promo-card animate__animated animate__bounceIn" id="promoCard1">
+            <div class="promo-card-close" onclick="closeIndividualAd('promoCard1')">
+                <i class="fas fa-times"></i>
+            </div>
             <h6>🎁 BONUS HARIAN</h6>
             <p>Dapatkan bonus hingga 50% setiap hari!</p>
         </div>
-        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 0.5s;">
+        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 0.5s;" id="promoCard2">
+            <div class="promo-card-close" onclick="closeIndividualAd('promoCard2')">
+                <i class="fas fa-times"></i>
+            </div>
             <h6>⚡ CASHBACK</h6>
             <p>Cashback hingga 10% untuk semua permainan!</p>
         </div>
-        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 1s;">
+        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 1s;" id="promoCard3">
+            <div class="promo-card-close" onclick="closeIndividualAd('promoCard3')">
+                <i class="fas fa-times"></i>
+            </div>
             <h6>🏆 TURNOVER</h6>
             <p>Bonus turnover 0.5% tanpa batas!</p>
         </div>
@@ -1388,8 +1351,71 @@
             localStorage.setItem('jackpotTickerClosed', 'true');
         }
 
-        // Check for closed ads on page load
-        function checkClosedAds() {
+        // Global ad closer functions - work on all pages
+        window.closeLeftAds = function() {
+            const leftAds = document.getElementById('leftAds');
+            if (leftAds) {
+                leftAds.style.transform = 'translateX(-100%)';
+                leftAds.style.opacity = '0';
+                setTimeout(() => {
+                    leftAds.style.display = 'none';
+                }, 300);
+                localStorage.setItem('leftAdsClosed', 'true');
+            }
+        };
+
+        window.closeRightAds = function() {
+            const rightAds = document.getElementById('rightAds');
+            if (rightAds) {
+                rightAds.style.transform = 'translateX(100%)';
+                rightAds.style.opacity = '0';
+                setTimeout(() => {
+                    rightAds.style.display = 'none';
+                }, 300);
+                localStorage.setItem('rightAdsClosed', 'true');
+            }
+        };
+
+        // NEW: Close individual ad cards
+        window.closeIndividualAd = function(adId) {
+            const adElement = document.getElementById(adId);
+            if (adElement) {
+                adElement.style.transform = 'scale(0)';
+                adElement.style.opacity = '0';
+                setTimeout(() => {
+                    adElement.style.display = 'none';
+                }, 300);
+                localStorage.setItem(adId + '_closed', 'true');
+                
+                // Check if all ads in container are closed
+                checkIfContainerEmpty(adElement);
+            }
+        };
+
+        // Check if all ads in a container are closed
+        window.checkIfContainerEmpty = function(adElement) {
+            const container = adElement.closest('#leftAds, #rightAds, #sidebarPromo');
+            if (container) {
+                const visibleAds = container.querySelectorAll('.ad-banner:not([style*="display: none"]), .promo-card:not([style*="display: none"])');
+                if (visibleAds.length === 0) {
+                    container.style.display = 'none';
+                }
+            }
+        };
+
+        // Check and apply closed states immediately
+        function checkAndApplyClosedStates() {
+            // Check individual ad cards
+            ['leftAd1', 'leftAd2', 'leftAd3', 'rightAd1', 'rightAd2', 'rightAd3', 'rightAd4', 'promoCard1', 'promoCard2', 'promoCard3'].forEach(adId => {
+                if (localStorage.getItem(adId + '_closed') === 'true') {
+                    const adElement = document.getElementById(adId);
+                    if (adElement) {
+                        adElement.style.display = 'none';
+                    }
+                }
+            });
+
+            // Check whole containers
             if (localStorage.getItem('leftAdsClosed') === 'true') {
                 const leftAds = document.getElementById('leftAds');
                 if (leftAds) leftAds.style.display = 'none';
@@ -1409,26 +1435,83 @@
                 const ticker = document.getElementById('jackpotTicker');
                 if (ticker) ticker.style.display = 'none';
             }
+            
+            if (localStorage.getItem('sidebarPromoClosed') === 'true') {
+                const sidebar = document.getElementById('sidebarPromo');
+                if (sidebar) sidebar.style.display = 'none';
+            }
+
+            // Check if containers should be hidden because all individual ads are closed
+            setTimeout(() => {
+                ['leftAds', 'rightAds', 'sidebarPromo'].forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    if (container) {
+                        const visibleAds = container.querySelectorAll('.ad-banner:not([style*="display: none"]), .promo-card:not([style*="display: none"])');
+                        if (visibleAds.length === 0) {
+                            container.style.display = 'none';
+                        }
+                    }
+                });
+            }, 100);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // Apply immediately when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                checkAndApplyClosedStates();
+            });
+        } else {
+            checkAndApplyClosedStates();
+        }
+
+        // Also check on window load as backup
+        window.addEventListener('load', checkAndApplyClosedStates);
+
+        // Handle responsive behavior
+        function handleResponsiveAds() {
+            // Hide ads on mobile screens
+            if (window.innerWidth <= 1200) {
+                const leftAds = document.getElementById('leftAds');
+                const rightAds = document.getElementById('rightAds');
+                if (leftAds) leftAds.style.display = 'none';
+                if (rightAds) rightAds.style.display = 'none';
+            }
+            
+            // Hide sidebar on mobile
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebarPromo');
+                if (sidebar) sidebar.style.display = 'none';
+            }
+        }
+
+        // Apply responsive behavior
+        window.addEventListener('resize', handleResponsiveAds);
+        
+        // Initial responsive check
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                handleResponsiveAds();
+                animateJackpot();
+                checkAndApplyClosedStates();
+                
+                // Create periodic win notifications
+                setInterval(createWinNotification, 8000);
+                
+                // Animate demo slot periodically
+                setInterval(animateDemoSlot, 15000);
+                
+                // Update jackpot ticker periodically
+                setInterval(updateJackpotTicker, 20000);
+            });
+        } else {
+            handleResponsiveAds();
             animateJackpot();
-            checkSidebarPromo();
-            checkClosedAds(); // This function is now in ad-closer.js
-            
-            // Start win notifications every 8 seconds
-            setInterval(createWinNotification, 8000);
-            
-            // Animate demo slot every 15 seconds
-            setInterval(animateDemoSlot, 15000);
-            animateDemoSlot(); // Initial animation
-            
-            // Update ticker every 12 seconds
-            setInterval(updateJackpotTicker, 12000);
-        });
+            checkAndApplyClosedStates();
+        }
     </script>
-    
+
     @yield('scripts')
+    
     <!-- Load JavaScript files in correct order -->
     <script src="{{ asset('js/roulette.js') }}"></script>
     <script src="{{ asset('js/ad-closer.js') }}"></script>

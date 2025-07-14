@@ -27,6 +27,47 @@ if (document.getElementById('rouletteWheel')) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide ads on roulette page
+    const adsElements = ['#leftAds', '#rightAds', '#slotDemo', '#jackpotTicker', '#sidebarPromo'];
+    adsElements.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+
+    // Roulette game variables
+    let currentBet = null;
+    let betAmount = 50000;
+    let isSpinning = false;
+
+    // Initialize game elements
+    const spinBtn = document.getElementById('spinBtn');
+    const rouletteWheel = document.getElementById('rouletteWheel');
+
+    // Add spin button effects
+    function addSpinButtonEffects() {
+        if (spinBtn) {
+            spinBtn.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
+            
+            spinBtn.addEventListener('mouseenter', function() {
+                if (!this.disabled) {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                    this.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.7)';
+                }
+            });
+            
+            spinBtn.addEventListener('mouseleave', function() {
+                if (!this.disabled) {
+                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
+                }
+            });
+        } else {
+            console.error('Spin button element not found in the DOM.');
+        }
+    }
+
     // Only run roulette code if we're on the roulette page
     if (!document.getElementById('rouletteWheel')) {
         return; // Exit if not on roulette page
@@ -214,4 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         updateWheelResponsiveness();
     }, 100);
+    
+    // Initialize everything
+    addSpinButtonEffects();
 });

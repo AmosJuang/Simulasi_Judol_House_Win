@@ -307,273 +307,6 @@
     max-width: 100%;
 }
 
-.slot-display {
-    background: #000;
-    padding: 20px;
-    border-radius: 15px;
-    border: 3px solid #ffd700;
-    position: relative;
-    overflow: hidden;
-    max-width: 100%;
-}
-
-.slot-display .row {
-    margin-left: -5px;
-    margin-right: -5px;
-}
-
-.slot-display .col-3 {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-/* Better mobile handling for slot machine */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    
-    .row {
-        margin-left: -10px;
-        margin-right: -10px;
-    }
-    
-    [class*="col-"] {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    
-    .slot-machine-container {
-        margin: -10px;
-        padding: 15px;
-        border-width: 3px;
-        border-radius: 15px;
-    }
-    
-    .slot-display {
-        padding: 15px;
-        border-width: 2px;
-        border-radius: 12px;
-    }
-    
-    .slot-display .row {
-        margin-left: -3px;
-        margin-right: -3px;
-    }
-    
-    .slot-display .col-3 {
-        padding-left: 3px;
-        padding-right: 3px;
-    }
-    
-    .slot-reel {
-        padding: 15px 8px;
-        margin: 0 3px;
-        border-width: 2px;
-        border-radius: 10px;
-        min-height: 80px;
-    }
-    
-    .reel-symbol {
-        font-size: 2.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .container {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    
-    .row {
-        margin-left: -5px;
-        margin-right: -5px;
-    }
-    
-    [class*="col-"] {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    
-    .slot-machine-container {
-        margin: -5px;
-        padding: 10px;
-        border-width: 2px;
-        border-radius: 12px;
-    }
-    
-    .slot-display {
-        padding: 10px;
-        border-width: 2px;
-        border-radius: 10px;
-    }
-    
-    .slot-display .row {
-        margin-left: -2px;
-        margin-right: -2px;
-    }
-    
-    .slot-display .col-3 {
-        padding-left: 2px;
-        padding-right: 2px;
-    }
-    
-    .slot-reel {
-        padding: 8px 3px;
-        margin: 0 1px;
-        min-height: 60px;
-    }
-    
-    .reel-symbol {
-        font-size: 1.5rem;
-    }
-}
-
-/* Fix payout table overflow */
-.payout-table-enhanced {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
-    border: 2px solid #ffd700;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-    max-width: 100%;
-}
-
-.payout-table-enhanced .row {
-    margin-left: -10px;
-    margin-right: -10px;
-}
-
-.payout-table-enhanced .col-md-6 {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-@media (max-width: 768px) {
-    .payout-table-enhanced .row {
-        margin-left: -5px;
-        margin-right: -5px;
-    }
-    
-    .payout-table-enhanced .col-md-6 {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-}
-
-@media (max-width: 576px) {
-    .payout-table-enhanced .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
-    
-    .payout-table-enhanced .col-md-6 {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    
-    .payout-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 5px;
-        padding: 8px;
-    }
-    
-    .payout-item .symbols {
-        min-width: auto;
-        margin-bottom: 5px;
-    }
-    
-    .payout-item .multiplier {
-        min-width: auto;
-        margin-bottom: 5px;
-    }
-    
-    .payout-item .desc {
-        min-width: auto;
-    }
-}
-
-/* Fix winner list overflow */
-.winner-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    margin: 8px 0;
-    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
-    border-radius: 10px;
-    border-left: 4px solid #00ff00;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    word-wrap: break-word;
-}
-
-@media (max-width: 576px) {
-    .winner-item {
-        flex-direction: column;
-        text-align: center;
-        padding: 10px;
-        gap: 5px;
-    }
-    
-    .winner-name {
-        font-size: 0.8rem;
-    }
-    
-    .winner-amount {
-        font-size: 0.85rem;
-    }
-    
-    .winner-combo {
-        font-size: 0.9rem;
-    }
-}
-
-/* Fix modal overflow */
-.win-modal-content {
-    max-width: 95%;
-    margin: 10px auto;
-    overflow: hidden;
-}
-
-.modal-body {
-    max-height: 70vh;
-    overflow-y: auto;
-    word-wrap: break-word;
-}
-
-@media (max-width: 576px) {
-    .win-title {
-        font-size: 1.3rem;
-    }
-    
-    .win-symbols {
-        font-size: 2.5rem;
-    }
-    
-    .win-multiplier {
-        font-size: 1.2rem;
-    }
-    
-    .win-amount {
-        font-size: 1.8rem;
-        word-break: break-all;
-    }
-}
-
-/* Enhanced Slot Machine Styles */
-.slot-machine-container {
-    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-    border: 5px solid #ffd700;
-    border-radius: 20px;
-    position: relative;
-    box-shadow: 
-        inset 0 0 30px rgba(255, 215, 0, 0.3),
-        0 0 50px rgba(255, 215, 0, 0.4);
-}
-
 .slot-machine-header {
     background: linear-gradient(135deg, #ff6b35, #ff0000);
     margin: -20px -20px 20px -20px;
@@ -593,6 +326,18 @@
     border-radius: 15px;
     border: 3px solid #ffd700;
     position: relative;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.slot-display .row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.slot-display .col-3 {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .slot-reel {
@@ -673,6 +418,16 @@
     max-width: 100%;
 }
 
+.payout-table-enhanced .row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.payout-table-enhanced .col-md-6 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .payout-item {
     display: flex;
     justify-content: space-between;
@@ -719,44 +474,151 @@
     font-size: 0.9rem;
 }
 
-/* Enhanced Slot Select */
-.slot-select {
-    background: linear-gradient(145deg, #1a1a1a, #2d2d2d) !important;
-    border: 3px solid #ffd700 !important;
-    color: #ffd700 !important;
-    border-radius: 15px !important;
-    padding: 15px 20px !important;
-    font-weight: bold !important;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3) !important;
+/* Better mobile handling for slot machine */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    
+    [class*="col-"] {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .slot-machine-container {
+        margin: 0;
+        padding: 15px;
+        border-width: 3px;
+        border-radius: 15px;
+    }
+    
+    .slot-display {
+        padding: 15px;
+        border-width: 2px;
+        border-radius: 12px;
+    }
+    
+    .slot-display .row {
+        margin-left: -3px;
+        margin-right: -3px;
+    }
+    
+    .slot-display .col-3 {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    
+    .slot-reel {
+        padding: 15px 8px;
+        margin: 0 3px;
+        border-width: 2px;
+        border-radius: 10px;
+        min-height: 80px;
+    }
+    
+    .reel-symbol {
+        font-size: 2.5rem;
+    }
+
+    .payout-table-enhanced .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    .payout-table-enhanced .col-md-6 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
-.slot-select:focus {
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6) !important;
-    border-color: #ffed4a !important;
+@media (max-width: 576px) {
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    [class*="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .slot-machine-container {
+        margin: 0;
+        padding: 10px;
+        border-width: 2px;
+        border-radius: 12px;
+    }
+    
+    .slot-display {
+        padding: 10px;
+        border-width: 2px;
+        border-radius: 10px;
+    }
+    
+    .slot-display .row {
+        margin-left: -2px;
+        margin-right: -2px;
+    }
+    
+    .slot-display .col-3 {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    
+    .slot-reel {
+        padding: 8px 3px;
+        margin: 0 1px;
+        min-height: 60px;
+    }
+    
+    .reel-symbol {
+        font-size: 1.5rem;
+    }
+
+    .payout-table-enhanced .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .payout-table-enhanced .col-md-6 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .payout-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+        padding: 8px;
+    }
+    
+    .payout-item .symbols {
+        min-width: auto;
+        margin-bottom: 5px;
+    }
+    
+    .payout-item .multiplier {
+        min-width: auto;
+        margin-bottom: 5px;
+    }
+    
+    .payout-item .desc {
+        min-width: auto;
+    }
 }
 
-/* Enhanced Spin Button */
-.slot-spin-btn {
-    font-size: 1.8rem !important;
-    padding: 25px 80px !important;
-    border-radius: 50px !important;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-        0 10px 30px rgba(255, 215, 0, 0.4),
-        inset 0 0 20px rgba(255, 255, 255, 0.1) !important;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.slot-spin-btn:hover {
-    transform: translateY(-5px) scale(1.05) !important;
-    box-shadow: 
-        0 15px 40px rgba(255, 215, 0, 0.6),
-        inset 0 0 30px rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Winner List Enhancements */
+/* Fix winner list overflow */
 .winner-item {
     display: flex;
     justify-content: space-between;
@@ -790,8 +652,32 @@
     font-size: 1.2rem;
 }
 
-/* Enhanced Win Modal */
+@media (max-width: 576px) {
+    .winner-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+        gap: 5px;
+    }
+    
+    .winner-name {
+        font-size: 0.8rem;
+    }
+    
+    .winner-amount {
+        font-size: 0.85rem;
+    }
+    
+    .winner-combo {
+        font-size: 0.9rem;
+    }
+}
+
+/* Fix modal overflow */
 .win-modal-content {
+    max-width: 95%;
+    margin: 10px auto;
+    overflow: hidden;
     background: linear-gradient(135deg, #ffd700, #ffed4a, #ff6b35) !important;
     color: #000 !important;
     border: 5px solid #ff0000 !important;
@@ -803,6 +689,12 @@
 @keyframes modalPulse {
     0% { transform: scale(1); }
     100% { transform: scale(1.02); }
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    word-wrap: break-word;
 }
 
 .win-title {
@@ -841,351 +733,22 @@
     100% { transform: scale(1.1); }
 }
 
-/* Jackpot Progress */
-.jackpot-progress {
-    margin-top: 15px;
-}
-
-.jackpot-bar {
-    background: #333;
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid #ffd700;
-}
-
-.jackpot-fill {
-    background: linear-gradient(90deg, #ff6b35, #ffd700, #ff0000);
-    height: 100%;
-    width: 75%;
-    animation: jackpotFill 3s ease-in-out infinite alternate;
-}
-
-@keyframes jackpotFill {
-    0% { width: 70%; }
-    100% { width: 85%; }
-}
-
-/* Enhanced Bet Amount Section for Slot Machine */
-.bet-amount-section {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 107, 53, 0.15));
-    border: 4px solid #ffd700;
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 
-        0 0 30px rgba(255, 215, 0, 0.5),
-        inset 0 0 20px rgba(255, 215, 0, 0.1);
-    animation: betAmountPulse 4s ease-in-out infinite;
-    position: relative;
-    overflow: hidden;
-}
-
-@keyframes betAmountPulse {
-    0%, 100% { 
-        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.1);
-        border-color: #ffd700;
-    }
-    50% { 
-        box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.2);
-        border-color: #ffed4a;
-    }
-}
-
-.bet-amount-section::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: shimmer 3s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes shimmer {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.bet-amount-title {
-    color: #ffd700;
-    font-size: 1.4rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-    animation: titleBounce 2s ease-in-out infinite;
-}
-
-@keyframes titleBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-}
-
-.bet-amount-title::before {
-    content: '💎 ';
-    font-size: 1.6rem;
-    animation: sparkle 1.5s ease-in-out infinite;
-}
-
-.bet-amount-title::after {
-    content: ' 💎';
-    font-size: 1.6rem;
-    animation: sparkle 1.5s ease-in-out infinite 0.5s;
-}
-
-@keyframes sparkle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.2); }
-}
-
-.bet-buttons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.bet-amount-btn {
-    background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
-    border: 3px solid #ffd700;
-    color: #ffd700;
-    padding: 18px 20px;
-    border-radius: 15px;
-    font-weight: 900;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.bet-amount-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.bet-amount-btn:hover::before {
-    left: 100%;
-}
-
-.bet-amount-btn:hover {
-    background: linear-gradient(145deg, #ffd700, #ffed4a);
-    color: #000;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
-    border-color: #ffed4a;
-}
-
-.bet-amount-btn.active {
-    background: linear-gradient(145deg, #ffd700, #ffed4a);
-    color: #000;
-    transform: scale(1.05);
-    box-shadow: 
-        0 0 25px rgba(255, 215, 0, 0.8),
-        inset 0 0 20px rgba(255, 255, 255, 0.2);
-    border-color: #ffed4a;
-    animation: activeBetPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes activeBetPulse {
-    0%, 100% { 
-        box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.2);
-    }
-    50% { 
-        box-shadow: 0 0 35px rgba(255, 215, 0, 1), inset 0 0 30px rgba(255, 255, 255, 0.3);
-    }
-}
-
-/* Custom Bet Input */
-.custom-bet-container {
-    background: linear-gradient(145deg, #1a1a1a, #000000);
-    border: 3px solid #ffd700;
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 15px;
-    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2);
-}
-
-.custom-bet-label {
-    color: #ffd700;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.custom-bet-input {
-    background: linear-gradient(145deg, #000000, #1a1a1a) !important;
-    border: 3px solid #ffd700 !important;
-    color: #ffd700 !important;
-    padding: 15px 20px !important;
-    border-radius: 12px !important;
-    font-size: 1.2rem !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    width: 100% !important;
-    box-shadow: 
-        inset 0 0 15px rgba(255, 215, 0, 0.2),
-        0 0 20px rgba(255, 215, 0, 0.3) !important;
-    transition: all 0.3s ease !important;
-}
-
-.custom-bet-input:focus {
-    outline: none !important;
-    border-color: #ffed4a !important;
-    box-shadow: 
-        inset 0 0 20px rgba(255, 215, 0, 0.3),
-        0 0 30px rgba(255, 215, 0, 0.8) !important;
-    transform: scale(1.02) !important;
-}
-
-.custom-bet-input::placeholder {
-    color: rgba(255, 215, 0, 0.6) !important;
-    font-style: italic !important;
-}
-
-/* Current Bet Display for Slot */
-.current-bet-display {
-    background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 0, 0.1));
-    border: 3px solid #00ff00;
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 20px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
-    animation: currentBetGlow 2s ease-in-out infinite alternate;
-}
-
-.current-bet-display h5 {
-    color: #00ff00;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-}
-
-.current-bet-display h5::before {
-    content: '🎰 ';
-    font-size: 1.3rem;
-}
-
-.current-bet-display h5::after {
-    content: ' 🎰';
-    font-size: 1.3rem;
-}
-
-.bet-amount-value {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #ffd700;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-    margin-bottom: 10px;
-    animation: valueFlicker 3s ease-in-out infinite;
-}
-
-@keyframes valueFlicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-}
-
-.potential-win {
-    font-size: 1.1rem;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px 15px;
-    border-radius: 8px;
-    border-left: 4px solid #00ff00;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .bet-amount-section {
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .bet-amount-title {
-        font-size: 1.2rem;
-        margin-bottom: 15px;
-    }
-    
-    .bet-buttons-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    
-    .bet-amount-btn {
-        padding: 15px 18px;
-        font-size: 1rem;
-    }
-    
-    .custom-bet-container {
-        padding: 15px;
-    }
-    
-    .custom-bet-input {
-        padding: 12px 15px !important;
-        font-size: 1.1rem !important;
-    }
-    
-    .current-bet-display {
-        padding: 15px;
-    }
-    
-    .bet-amount-value {
-        font-size: 1.6rem;
-    }
-}
-
 @media (max-width: 576px) {
-    .bet-amount-section {
-        padding: 15px;
+    .win-title {
+        font-size: 1.3rem;
     }
     
-    .bet-amount-title {
-        font-size: 1rem;
-        letter-spacing: 1px;
+    .win-symbols {
+        font-size: 2.5rem;
     }
     
-    .bet-buttons-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    .win-multiplier {
+        font-size: 1.2rem;
     }
     
-    .bet-amount-btn {
-        padding: 12px 15px;
-        font-size: 0.9rem;
-    }
-    
-    .custom-bet-input {
-        padding: 10px 12px !important;
-        font-size: 1rem !important;
-    }
-    
-    .bet-amount-value {
-        font-size: 1.4rem;
-    }
-    
-    .potential-win {
-        font-size: 1rem;
-        padding: 6px 12px;
+    .win-amount {
+        font-size: 1.8rem;
+        word-break: break-all;
     }
 }
 </style>
@@ -1511,9 +1074,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function addSpinButtonEffects() {
         const spinBtn = document.getElementById('spin-btn');
         if (spinBtn) {
-            setInterval(() => {
+            setInterval(function() {
                 spinBtn.style.boxShadow = '0 0 50px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 0, 0, 0.5)';
-                setTimeout(() => {
+                setTimeout(function() {
                     spinBtn.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
                 }, 500);
             }, 2000);
@@ -1523,14 +1086,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addSpinButtonEffects();
 });
 </script>
-                    spinBtn.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
-                }, 500);
-            }, 2000);
-        }
-    }
-    
-    addSpinButtonEffects();
-});
-</script>
+@endsection
+
 
 
