@@ -1,211 +1,136 @@
 // Buat file ini jika belum ada
 
+// Roulette wheel number positions (European roulette order) - CORRECTED ORDER
+const wheelNumbers = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+
+// Only run roulette code if we're on the roulette page
+if (document.getElementById('rouletteWheel')) {
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Roulette wheel initialized');
+        
+        // Color mapping for numbers
+        const redNumbers = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+        
+        function getNumberColor(number) {
+            if (number === 0) return 'green';
+            return redNumbers.includes(number) ? 'red' : 'black';
+        }
+        
+        // Apply correct colors to wheel numbers
+        document.querySelectorAll('.wheel-number').forEach((element, index) => {
+            const number = wheelNumbers[index];
+            const color = getNumberColor(number);
+            element.style.backgroundColor = color === 'red' ? '#cc0000' : color === 'black' ? '#000000' : '#00aa44';
+            element.style.color = '#ffffff';
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Only run roulette code if we're on the roulette page
     if (!document.getElementById('rouletteWheel')) {
         return; // Exit if not on roulette page
     }
     
-    // Roulette wheel number positions (same order as in Blade template)
-    const wheelNumbers = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
-    
-    // Find the original spin button and its event handler
-    const spinBtn = document.getElementById('spin-btn');
-    
-    if (spinBtn && document.querySelector('.roulette-table')) {
-        // Only override if we're on roulette page (has roulette table)
-        // Remove existing event listeners
-        const newSpinBtn = spinBtn.cloneNode(true);
-        spinBtn.parentNode.replaceChild(newSpinBtn, spinBtn);
+    // Function to calculate the correct rotation angle for winning number
+    function calculateWheelRotation(winningNumber) {
+        const numberIndex = wheelNumbers.indexOf(winningNumber);
+        if (numberIndex === -1) {
+            console.error('Number not found:', winningNumber);
+            return 1800; // Default 5 rotations if number not found
+        }
         
-        // Add new event handler for roulette
-        newSpinBtn.addEventListener('click', function() {
-            // Get current bet type and amount
-            const selectedBetElement = document.querySelector('.number-btn.selected, .outside-bet-btn.selected');
-            
-            if (!selectedBetElement) {
-                alert('Silakan pilih taruhan terlebih dahulu!');
-                return;
-            }
-            
-            // Get bet amount
-            let betAmount = 25000; // Default
-            const customBetInput = document.getElementById('customBetAmount');
-            
-            if (customBetInput && customBetInput.value && parseInt(customBetInput.value) >= 15000) {
-                betAmount = parseInt(customBetInput.value);
-            } else {
-                // Check if a preset amount is selected
-                const activeBetBtn = document.querySelector('.bet-amount-btn.active');
-                if (activeBetBtn) {
-                    betAmount = parseInt(activeBetBtn.getAttribute('data-amount'));
-                }
-            }
-            
-            // Validate bet amount
-            if (betAmount < 15000) {
-                alert('Minimal taruhan Rp 15.000!');
-                return;
-            }
-            
-            // Get bet details
-            const betType = selectedBetElement.getAttribute('data-bet');
-            const betValue = selectedBetElement.getAttribute('data-value');
-            const payoutRatio = parseInt(selectedBetElement.getAttribute('data-payout'));
-            
-            // Disable spin button and show loading state
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMUTAR...';
-            
-            // Start the wheel animation - only the wheel spins, pointer stays fixed
-            const wheel = document.getElementById('rouletteWheel');
-            if (wheel) {
-                // Reset any previous animation
-                wheel.classList.remove('spinning');
-                wheel.style.transform = 'rotate(0deg)';
-                // Force reflow
-                void wheel.offsetHeight;
-                // Add spinning class
-                wheel.classList.add('spinning');
-            }
-            
-            // Make API call
-            fetch('/gambling/roulette/play', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    bet_type: betType,
-                    bet_value: betValue,
-                    bet_amount: betAmount,
-                    payout_ratio: payoutRatio
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Calculate the final position for the winning number
-                    const winningNumberIndex = wheelNumbers.indexOf(data.winning_number);
-                    if (winningNumberIndex !== -1) {
-                        // Calculate the angle for this number position
-                        const anglePerNumber = 360 / 37;
-                        const targetAngle = winningNumberIndex * anglePerNumber;
-                        
-                        // Add multiple rotations + final position
-                        // We want the arrow to point to the winning number
-                        const finalRotation = 1800 - targetAngle; // 5 full rotations minus the target angle
-                        
-                        // Remove spinning animation and set final position
-                        setTimeout(() => {
-                            wheel.classList.remove('spinning');
-                            wheel.style.transform = `rotate(${finalRotation}deg)`;
-                        }, 3800); // Slightly before animation ends
-                    }
-                    
-                    // Show winning number after animation completes
-                    setTimeout(() => {
-                        showResult(data);
-                    }, 4000);
-                } else {
-                    alert(data.message);
-                    // Reset wheel animation
-                    if (wheel) {
-                        wheel.classList.remove('spinning');
-                        wheel.style.transform = 'rotate(0deg)';
-                    }
-                    this.disabled = false;
-                    this.innerHTML = '<i class="fas fa-play"></i> PUTAR RODA!';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan!');
-                
-                // Reset wheel animation
-                if (wheel) {
-                    wheel.classList.remove('spinning');
-                    wheel.style.transform = 'rotate(0deg)';
-                }
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-play"></i> PUTAR RODA!';
-            });
-        });
+        console.log(`Winning number: ${winningNumber}, Index: ${numberIndex}`);
+        
+        // Each number segment is 360/37 = 9.729... degrees
+        const degreesPerSegment = 360 / 37;
+        
+        // Calculate the angle where this number is positioned on the wheel
+        // Numbers are positioned clockwise starting from 0 at the top
+        const numberAngle = numberIndex * degreesPerSegment;
+        
+        console.log(`Number angle: ${numberAngle} degrees`);
+        
+        // The arrow points to the top of the wheel (12 o'clock position)
+        // We need to rotate the wheel so the winning number aligns with the arrow
+        // Since the wheel rotates clockwise, we need to calculate the opposite rotation
+        let targetRotation = (360 - numberAngle) % 360;
+        
+        // Add multiple full rotations for spinning effect (5 rotations = 1800 degrees)
+        // Plus a small offset to ensure the arrow points precisely to the number
+        const finalRotation = 1800 + targetRotation;
+        
+        console.log(`Target rotation: ${targetRotation}, Final rotation: ${finalRotation}`);
+        
+        return finalRotation;
     }
     
-    // Function to show result after wheel animation
-    function showResult(data) {
-        // Update balance and stats
-        document.getElementById('balance').textContent = 'Rp ' + data.new_balance.toLocaleString('id-ID');
-        document.getElementById('total-attempts').textContent = data.total_attempts;
-        document.getElementById('total-wins').textContent = data.total_wins;
+    // Enhanced showResult function with precise arrow positioning
+    window.rouletteShowResult = function(data) {
+        const wheel = document.getElementById('rouletteWheel');
         
-        // Show winning number
+        if (wheel && data.winning_number !== undefined) {
+            // Calculate the exact rotation needed for the arrow to point to winning number
+            const finalRotation = calculateWheelRotation(data.winning_number);
+            
+            console.log(`Applying rotation: ${finalRotation}deg for winning number: ${data.winning_number}`);
+            
+            // Apply the final rotation after the spinning animation
+            setTimeout(() => {
+                wheel.classList.remove('spinning');
+                wheel.style.transform = `rotate(${finalRotation}deg)`;
+                wheel.style.transition = 'transform 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                
+                // Add winning number highlight after wheel stops
+                setTimeout(() => {
+                    highlightWinningNumber(data.winning_number);
+                }, 1000);
+            }, 3800);
+        }
+        
+        // Update balance and stats
+        if (document.getElementById('balance')) {
+            document.getElementById('balance').textContent = 'Rp ' + data.new_balance.toLocaleString('id-ID');
+        }
+        if (document.getElementById('total-attempts')) {
+            document.getElementById('total-attempts').textContent = data.total_attempts;
+        }
+        if (document.getElementById('total-wins')) {
+            document.getElementById('total-wins').textContent = data.total_wins;
+        }
+        
+        // Show winning number display
         const winningNumber = document.getElementById('winningNumber');
         const numberDisplay = document.getElementById('numberDisplay');
         const colorDisplay = document.getElementById('colorDisplay');
         
-        numberDisplay.textContent = data.winning_number;
+        if (numberDisplay) numberDisplay.textContent = data.winning_number;
         
-        let colorText = 'HIJAU';
-        if (data.winning_color === 'red') colorText = 'MERAH';
-        else if (data.winning_color === 'black') colorText = 'HITAM';
-        
-        colorDisplay.textContent = colorText;
-        winningNumber.style.display = 'block';
-        
-        // Show result
-        const resultDiv = document.getElementById('gameResult');
-        const resultText = document.getElementById('resultText');
-        const resultDetails = document.getElementById('resultDetails');
-        
-        if (data.win) {
-            resultText.textContent = '🎉 SELAMAT! ANDA MENANG!';
-            resultText.className = 'text-success mb-3';
-            resultDetails.innerHTML = `
-                <div class="win-result">
-                    <div class="mb-2">Angka Pemenang: <span class="fw-bold">${data.winning_number}</span></div>
-                    <div class="mb-2">Warna: <span class="fw-bold" style="color: ${data.winning_color === 'red' ? '#ff0000' : data.winning_color === 'black' ? '#000000' : '#00aa44'}">${colorText}</span></div>
-                    <h4 class="text-success">MENANG: Rp ${data.payout.toLocaleString('id-ID')}</h4>
-                    <p class="text-muted">Taruhan: Rp ${data.bet_amount.toLocaleString('id-ID')} | Pembayaran: ${data.payout_ratio + 1}:1</p>
-                </div>
-            `;
-            
-            // Start falling gold animation if available
-            if (typeof startFallingGold === 'function') {
-                startFallingGold();
-            }
-        } else {
-            resultText.textContent = '💸 TIDAK BERUNTUNG KALI INI';
-            resultText.className = 'text-danger mb-3';
-            resultDetails.innerHTML = `
-                <div class="lose-result">
-                    <div class="mb-2">Angka Pemenang: <span class="fw-bold">${data.winning_number}</span></div>
-                    <div class="mb-2">Warna: <span class="fw-bold" style="color: ${data.winning_color === 'red' ? '#ff0000' : data.winning_color === 'black' ? '#000000' : '#00aa44'}">${colorText}</span></div>
-                    <h4 class="text-danger">KALAH: Rp ${data.bet_amount.toLocaleString('id-ID')}</h4>
-                    <p class="text-muted">Coba lagi untuk keberuntungan yang lebih baik!</p>
-                </div>
-            `;
+        if (colorDisplay) {
+            let colorText = 'HIJAU';
+            if (data.winning_color === 'red') colorText = 'MERAH';
+            else if (data.winning_color === 'black') colorText = 'HITAM';
+            colorDisplay.textContent = colorText;
         }
         
-        resultDiv.style.display = 'block';
-        resultDiv.classList.add('animate__animated', 'animate__fadeInUp');
+        if (winningNumber) {
+            setTimeout(() => {
+                winningNumber.style.display = 'block';
+                winningNumber.classList.add('animate__animated', 'animate__zoomIn');
+            }, 4000);
+        }
         
         // Add to recent results
         addToRecentResults(data.winning_number, data.winning_color);
         
-        // Reset spin button
-        const spinBtn = document.getElementById('spin-btn');
-        spinBtn.disabled = false;
-        spinBtn.innerHTML = '<i class="fas fa-play"></i> PUTAR RODA!';
-        
-        // Clear current bet after some time
+        // Hide winning number after 8 seconds
         setTimeout(() => {
-            winningNumber.style.display = 'none';
-        }, 8000);
-    }
+            if (winningNumber) {
+                winningNumber.style.display = 'none';
+                winningNumber.classList.remove('animate__animated', 'animate__zoomIn');
+            }
+        }, 12000);
+    };
     
     // Function to add results to recent results display
     function addToRecentResults(number, color) {
@@ -213,30 +138,80 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!recentResults) return;
         
         const newResult = document.createElement('div');
-        newResult.className = 'result-item';
+        newResult.className = 'result-item animate__animated animate__fadeInRight';
         
-        let parity = '';
         let colorText = 'HIJAU';
-        
-        if (number === 0) {
-            parity = '';
-        } else {
-            parity = number % 2 === 0 ? ', GENAP' : ', GANJIL';
-        }
-        
         if (color === 'red') colorText = 'MERAH';
         else if (color === 'black') colorText = 'HITAM';
         
         newResult.innerHTML = `
             <span class="result-number ${color}">${number}</span>
-            <span class="result-info">${colorText}${parity}</span>
+            <span class="result-info">${colorText}</span>
         `;
         
         recentResults.insertBefore(newResult, recentResults.firstChild);
         
-        // Keep only last 5 results
-        if (recentResults.children.length > 5) {
+        // Keep only last 8 results
+        if (recentResults.children.length > 8) {
             recentResults.removeChild(recentResults.lastChild);
         }
     }
+    
+    // Function to highlight the winning number on the wheel
+    function highlightWinningNumber(winningNumber) {
+        // Remove any existing highlights
+        document.querySelectorAll('.wheel-number').forEach(el => {
+            el.classList.remove('winning-highlight');
+        });
+        
+        // Find and highlight the winning number
+        document.querySelectorAll('.wheel-number').forEach(element => {
+            if (parseInt(element.textContent) === winningNumber) {
+                element.classList.add('winning-highlight');
+                
+                // Remove highlight after 3 seconds
+                setTimeout(() => {
+                    element.classList.remove('winning-highlight');
+                }, 3000);
+            }
+        });
+    }
+    
+    // Responsive wheel sizing on window resize
+    window.addEventListener('resize', function() {
+        // Recalculate wheel number positions for different screen sizes
+        updateWheelResponsiveness();
+    });
+    
+    // Function to update wheel responsiveness with better positioning
+    function updateWheelResponsiveness() {
+        const wheelContainer = document.querySelector('.wheel-container');
+        const wheelNumbers = document.querySelectorAll('.wheel-number');
+        
+        if (!wheelContainer || wheelNumbers.length === 0) return;
+        
+        const containerSize = wheelContainer.offsetWidth;
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 576;
+        
+        // Calculate radius based on container size for proper arrow alignment
+        let radius;
+        if (isSmallMobile) {
+            radius = (containerSize / 2) - 25; // Account for number size
+        } else if (isMobile) {
+            radius = (containerSize / 2) - 30;
+        } else {
+            radius = (containerSize / 2) - 35;
+        }
+        
+        // Update transform-origin for each number to ensure proper positioning
+        wheelNumbers.forEach(number => {
+            number.style.transformOrigin = `50% ${radius}px`;
+        });
+    }
+    
+    // Initialize responsive behavior
+    setTimeout(() => {
+        updateWheelResponsiveness();
+    }, 100);
 });

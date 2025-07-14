@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container admin-clean">
     <div class="row">
         <div class="col-12">
             <div class="casino-title">
@@ -220,6 +220,22 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide all ads on admin page
+    const adsElements = [
+        '#leftAds',
+        '#rightAds', 
+        '#slotDemo',
+        '#jackpotTicker',
+        '#sidebarPromo'
+    ];
+    
+    adsElements.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+    
     const balanceModal = new bootstrap.Modal(document.getElementById('balanceModal'));
 
     // Handle balance button clicks
@@ -242,6 +258,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @section('styles')
 <style>
+/* Hide ads specifically on admin pages */
+.admin-clean #leftAds,
+.admin-clean #rightAds,
+.admin-clean #slotDemo,
+.admin-clean #jackpotTicker,
+.admin-clean #sidebarPromo {
+    display: none !important;
+}
+
+/* Ensure full width for admin content */
+.admin-clean .container {
+    max-width: 100% !important;
+    padding: 20px !important;
+}
+
 .casino-title {
     text-align: center;
     font-size: 2.5rem;

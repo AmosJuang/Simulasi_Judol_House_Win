@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid admin-container">
+<div class="container-fluid admin-container admin-clean">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10">
@@ -226,6 +226,15 @@
 
 @section('styles')
 <style>
+/* Hide ads specifically on admin pages */
+.admin-clean #leftAds,
+.admin-clean #rightAds,
+.admin-clean #slotDemo,
+.admin-clean #jackpotTicker,
+.admin-clean #sidebarPromo {
+    display: none !important;
+}
+
 /* Admin Force Result Styles */
 .admin-container {
     background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
@@ -622,6 +631,22 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide all ads on admin pages
+    const adsElements = [
+        '#leftAds',
+        '#rightAds', 
+        '#slotDemo',
+        '#jackpotTicker',
+        '#sidebarPromo'
+    ];
+    
+    adsElements.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+
     // Ensure all close functions are available on this page
     if (typeof checkClosedAds === 'function') {
         checkClosedAds();

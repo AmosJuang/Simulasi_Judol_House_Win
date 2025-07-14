@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container admin-clean">
     <!-- Game Categories -->
     <div class="row mb-4">
         <div class="col-12 text-center">
@@ -866,335 +866,326 @@
     100% { width: 85%; }
 }
 
+/* Enhanced Bet Amount Section for Slot Machine */
+.bet-amount-section {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 107, 53, 0.15));
+    border: 4px solid #ffd700;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.5),
+        inset 0 0 20px rgba(255, 215, 0, 0.1);
+    animation: betAmountPulse 4s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes betAmountPulse {
+    0%, 100% { 
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.1);
+        border-color: #ffd700;
+    }
+    50% { 
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.2);
+        border-color: #ffed4a;
+    }
+}
+
+.bet-amount-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.bet-amount-title {
+    color: #ffd700;
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    animation: titleBounce 2s ease-in-out infinite;
+}
+
+@keyframes titleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.bet-amount-title::before {
+    content: '💎 ';
+    font-size: 1.6rem;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.bet-amount-title::after {
+    content: ' 💎';
+    font-size: 1.6rem;
+    animation: sparkle 1.5s ease-in-out infinite 0.5s;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.bet-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.bet-amount-btn {
+    background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+    border: 3px solid #ffd700;
+    color: #ffd700;
+    padding: 18px 20px;
+    border-radius: 15px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.bet-amount-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.bet-amount-btn:hover::before {
+    left: 100%;
+}
+
+.bet-amount-btn:hover {
+    background: linear-gradient(145deg, #ffd700, #ffed4a);
+    color: #000;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+    border-color: #ffed4a;
+}
+
+.bet-amount-btn.active {
+    background: linear-gradient(145deg, #ffd700, #ffed4a);
+    color: #000;
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 25px rgba(255, 215, 0, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    border-color: #ffed4a;
+    animation: activeBetPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes activeBetPulse {
+    0%, 100% { 
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    50% { 
+        box-shadow: 0 0 35px rgba(255, 215, 0, 1), inset 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Custom Bet Input */
+.custom-bet-container {
+    background: linear-gradient(145deg, #1a1a1a, #000000);
+    border: 3px solid #ffd700;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 15px;
+    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.custom-bet-label {
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.custom-bet-input {
+    background: linear-gradient(145deg, #000000, #1a1a1a) !important;
+    border: 3px solid #ffd700 !important;
+    color: #ffd700 !important;
+    padding: 15px 20px !important;
+    border-radius: 12px !important;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    width: 100% !important;
+    box-shadow: 
+        inset 0 0 15px rgba(255, 215, 0, 0.2),
+        0 0 20px rgba(255, 215, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.custom-bet-input:focus {
+    outline: none !important;
+    border-color: #ffed4a !important;
+    box-shadow: 
+        inset 0 0 20px rgba(255, 215, 0, 0.3),
+        0 0 30px rgba(255, 215, 0, 0.8) !important;
+    transform: scale(1.02) !important;
+}
+
+.custom-bet-input::placeholder {
+    color: rgba(255, 215, 0, 0.6) !important;
+    font-style: italic !important;
+}
+
+/* Current Bet Display for Slot */
+.current-bet-display {
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 0, 0.1));
+    border: 3px solid #00ff00;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+    animation: currentBetGlow 2s ease-in-out infinite alternate;
+}
+
+.current-bet-display h5 {
+    color: #00ff00;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.current-bet-display h5::before {
+    content: '🎰 ';
+    font-size: 1.3rem;
+}
+
+.current-bet-display h5::after {
+    content: ' 🎰';
+    font-size: 1.3rem;
+}
+
+.bet-amount-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffd700;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
+    animation: valueFlicker 3s ease-in-out infinite;
+}
+
+@keyframes valueFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.potential-win {
+    font-size: 1.1rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #00ff00;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .slot-machine-container {
-        margin: -15px -15px 15px -15px;
-        padding: 15px;
-        border-width: 3px;
-        border-radius: 15px;
+    .bet-amount-section {
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
-    .slot-machine-header {
-        margin: -15px -15px 15px -15px;
-        padding: 12px;
-        border-radius: 12px 12px 0 0;
+    .bet-amount-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
     }
     
-    .slot-machine-header h4 {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
-    }
-    
-    .jackpot-counter {
-        font-size: 0.9rem;
-    }
-    
-    .slot-display {
-        padding: 15px;
-        border-width: 2px;
-        border-radius: 12px;
-    }
-    
-    .slot-reel {
-        padding: 15px 8px;
-        margin: 0 3px;
-        border-width: 2px;
-        border-radius: 10px;
-        min-height: 80px;
-    }
-    
-    .reel-symbol {
-        font-size: 2.5rem;
-    }
-    
-    .slot-spin-btn {
-        font-size: 1.2rem !important;
-        padding: 15px 25px !important;
-        border-radius: 25px !important;
-    }
-    
-    .bet-amount-buttons {
+    .bet-buttons-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 12px;
     }
     
     .bet-amount-btn {
-        padding: 10px 12px;
-        font-size: 0.8rem;
+        padding: 15px 18px;
+        font-size: 1rem;
     }
     
-    .payout-table-enhanced {
+    .custom-bet-container {
         padding: 15px;
     }
     
-    .payout-item {
-        padding: 8px 12px;
-        margin: 3px 0;
-    }
-    
-    .payout-item .symbols {
-        font-size: 1.2rem;
-        min-width: 80px;
-    }
-    
-    .payout-item .multiplier {
-        font-size: 1rem;
-        min-width: 50px;
-    }
-    
-    .payout-item .desc {
-        font-size: 0.8rem;
-    }
-    
-    .slot-select {
+    .custom-bet-input {
         padding: 12px 15px !important;
-        font-size: 0.9rem !important;
+        font-size: 1.1rem !important;
     }
     
-    .winner-item {
-        padding: 10px 12px;
-        margin: 6px 0;
+    .current-bet-display {
+        padding: 15px;
     }
     
-    .winner-name {
-        font-size: 0.9rem;
-    }
-    
-    .winner-amount {
-        font-size: 0.95rem;
-    }
-    
-    .winner-combo {
-        font-size: 1rem;
+    .bet-amount-value {
+        font-size: 1.6rem;
     }
 }
 
 @media (max-width: 576px) {
-    .slot-machine-container {
-        margin: -10px -10px 10px -10px;
-        padding: 10px;
-        border-width: 2px;
-        border-radius: 12px;
-    }
-    
-    .slot-machine-header {
-        margin: -10px -10px 10px -10px;
-        padding: 10px;
-        border-radius: 10px 10px 0 0;
-    }
-    
-    .slot-machine-header h4 {
-        font-size: 1rem;
-        margin-bottom: 5px;
-    }
-    
-    .jackpot-counter {
-        font-size: 0.8rem;
-    }
-    
-    .slot-display {
-        padding: 10px;
-        border-width: 2px;
-        border-radius: 10px;
-    }
-    
-    .slot-reel {
-        padding: 10px 5px;
-        margin: 0 2px;
-        border-width: 2px;
-        border-radius: 8px;
-        min-height: 70px;
-    }
-    
-    .reel-symbol {
-        font-size: 2rem;
-    }
-    
-    .slot-spin-btn {
-        font-size: 1rem !important;
-        padding: 12px 20px !important;
-        border-radius: 20px !important;
-    }
-    
-    .bet-amount-buttons {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-        margin-bottom: 10px;
-    }
-    
-    .bet-amount-btn {
-        padding: 8px 10px;
-        font-size: 0.75rem;
-        border-radius: 8px;
-    }
-    
-    .payout-table-enhanced {
-        padding: 12px;
-    }
-    
-    .payout-table-enhanced h5 {
-        font-size: 1rem;
-        margin-bottom: 15px;
-    }
-    
-    .payout-item {
-        padding: 6px 10px;
-        margin: 2px 0;
-        border-radius: 6px;
-    }
-    
-    .payout-item .symbols {
-        font-size: 1rem;
-        min-width: 70px;
-    }
-    
-    .payout-item .multiplier {
-        font-size: 0.9rem;
-        min-width: 45px;
-    }
-    
-    .payout-item .desc {
-        font-size: 0.7rem;
-    }
-    
-    .slot-select {
-        padding: 10px 12px !important;
-        font-size: 0.85rem !important;
-        border-radius: 10px !important;
-    }
-    
-    .winner-item {
-        padding: 8px 10px;
-        margin: 4px 0;
-        border-radius: 8px;
-    }
-    
-    .winner-name {
-        font-size: 0.8rem;
-    }
-    
-    .winner-amount {
-        font-size: 0.85rem;
-    }
-    
-    .winner-combo {
-        font-size: 0.9rem;
-    }
-    
-    .game-card {
-        border-radius: 12px;
-        padding: 15px !important;
-    }
-    
-    .betting-container {
+    .bet-amount-section {
         padding: 15px;
-        border-radius: 12px;
     }
     
-    .betting-container h4 {
-        font-size: 1.1rem;
-        margin-bottom: 15px;
+    .bet-amount-title {
+        font-size: 1rem;
+        letter-spacing: 1px;
     }
     
-    .betting-container label {
-        font-size: 0.9rem;
-    }
-    
-    /* Fix modal on mobile */
-    .win-modal-content {
-        margin: 10px;
-        border-radius: 15px !important;
-    }
-    
-    .win-title {
-        font-size: 1.3rem;
-    }
-    
-    .win-symbols {
-        font-size: 2.5rem;
-    }
-    
-    .win-multiplier {
-        font-size: 1.2rem;
-    }
-    
-    .win-amount {
-        font-size: 1.8rem;
-    }
-    
-    /* Responsive grid for smaller screens */
-    .row.justify-content-center > .col-lg-8 {
-        order: 1;
-    }
-    
-    .row.justify-content-center > .col-lg-4 {
-        order: 2;
-        margin-top: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .slot-display .row {
-        margin: 0 -2px;
-    }
-    
-    .slot-display .col-3 {
-        padding: 0 2px;
-    }
-    
-    .slot-reel {
-        padding: 8px 3px;
-        margin: 0 1px;
-        min-height: 60px;
-    }
-    
-    .reel-symbol {
-        font-size: 1.5rem;
-    }
-    
-    .slot-spin-btn {
-        font-size: 0.9rem !important;
-        padding: 10px 15px !important;
-    }
-    
-    .bet-amount-buttons {
-        grid-template-columns: 1fr 1fr;
-        gap: 4px;
+    .bet-buttons-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
     }
     
     .bet-amount-btn {
-        padding: 6px 8px;
-        font-size: 0.7rem;
+        padding: 12px 15px;
+        font-size: 0.9rem;
     }
     
-    .payout-table-enhanced .row {
-        margin: 0;
+    .custom-bet-input {
+        padding: 10px 12px !important;
+        font-size: 1rem !important;
     }
     
-    .payout-table-enhanced .col-md-6 {
-        padding: 0;
+    .bet-amount-value {
+        font-size: 1.4rem;
     }
     
-    .payout-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 2px;
-        padding: 4px 8px;
-    }
-    
-    .payout-item .symbols {
-        min-width: auto;
-        margin-bottom: 2px;
-    }
-    
-    .payout-item .multiplier {
-        min-width: auto;
-        margin-bottom: 2px;
-    }
-    
-    .payout-item .desc {
-        min-width: auto;
+    .potential-win {
+        font-size: 1rem;
+        padding: 6px 12px;
     }
 }
 </style>
@@ -1523,6 +1514,15 @@ document.addEventListener('DOMContentLoaded', function() {
             setInterval(() => {
                 spinBtn.style.boxShadow = '0 0 50px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 0, 0, 0.5)';
                 setTimeout(() => {
+                    spinBtn.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
+                }, 500);
+            }, 2000);
+        }
+    }
+    
+    addSpinButtonEffects();
+});
+</script>
                     spinBtn.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.4)';
                 }, 500);
             }, 2000);

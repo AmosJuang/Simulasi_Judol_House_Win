@@ -899,25 +899,37 @@
             background: rgba(255, 0, 0, 0.8);
             transform: scale(1.1);
         }
+
+        /* Winning number highlight effect */
+        .winning-highlight {
+            background: linear-gradient(45deg, #ffd700, #ffed4a) !important;
+            color: #000 !important;
+            transform: scale(1.3) !important;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 1) !important;
+            border: 2px solid #ff0000 !important;
+            animation: winningPulse 0.5s ease-in-out infinite alternate !important;
+            z-index: 15 !important;
+        }
+        
+        @keyframes winningPulse {
+            0% { 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+                transform: scale(1.3);
+            }
+            100% { 
+                box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+                transform: scale(1.4);
+            }
+        }
+
     </style>
     
     @yield('styles')
 </head>
 <body>
-    <!-- Jackpot Ticker -->
-    <div class="jackpot-ticker" id="jackpotTicker">
-        <div class="ticker-close-btn" onclick="closeJackpotTicker()">
-            <i class="fas fa-times"></i>
-        </div>
-        <span class="blink">🚨 JACKPOT ALERT! 🚨</span>
-        &nbsp;&nbsp;
-        <span>Player "Ahmad****" meraih Rp 500.000.000!</span>
-        &nbsp;&nbsp;
-        <span class="blink">🔥 GILIRAN ANDA SELANJUTNYA! 🔥</span>
-    </div>
-
-    <!-- Left Side Advertisements -->
-    <div class="left-ads" id="leftAds">
+    <!-- Left Ads - Hidden on admin and roulette pages -->
+    @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
+    <div id="leftAds" class="floating-ads left-ads">
         <div class="ads-close-btn" onclick="closeLeftAds()">
             <i class="fas fa-times"></i>
         </div>
@@ -945,9 +957,11 @@
             <small style="color: #ffd700;">25x MULTIPLIER</small>
         </div>
     </div>
+    @endif
 
-    <!-- Right Side Advertisements -->
-    <div class="right-ads" id="rightAds">
+    <!-- Right Ads - Hidden on admin and roulette pages -->
+    @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
+    <div id="rightAds" class="floating-ads right-ads">
         <div class="ads-close-btn" onclick="closeRightAds()">
             <i class="fas fa-times"></i>
         </div>
@@ -983,9 +997,11 @@
             <small style="color: #ffd700;">FREE BONUS</small>
         </div>
     </div>
+    @endif
 
-    <!-- Demo Slot Machine -->
-    <div class="slot-win-demo" id="slotDemo">
+    <!-- Slot Demo Popup - Hidden on admin and roulette pages -->
+    @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
+    <div id="slotDemo" class="floating-popup slot-demo-popup">
         <div class="demo-close-btn" onclick="closeSlotDemo()">
             <i class="fas fa-times"></i>
         </div>
@@ -999,25 +1015,42 @@
             <span style="color: #00ff00;">Rp 50.000.000</span>
         </div>
     </div>
+    @endif
 
-    <!-- Animated Background -->
-    <div class="casino-background"></div>
-    
-    <!-- Floating Elements -->
-    <div class="floating-elements">
-        <i class="floating-coin fas fa-coins" style="top: 10%; left: 5%; animation-delay: 0s;"></i>
-        <i class="floating-coin fas fa-dice" style="top: 20%; right: 10%; animation-delay: 1s;"></i>
-        <i class="floating-coin fas fa-gem" style="top: 60%; left: 8%; animation-delay: 2s;"></i>
-        <i class="floating-coin fas fa-crown" style="top: 80%; right: 15%; animation-delay: 3s;"></i>
-        <i class="floating-coin fas fa-star" style="top: 40%; left: 12%; animation-delay: 4s;"></i>
-        <i class="floating-coin fas fa-diamond" style="top: 70%; right: 5%; animation-delay: 5s;"></i>
+    <!-- Jackpot Ticker - Hidden on admin and roulette pages -->
+    @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
+    <div id="jackpotTicker" class="jackpot-ticker">
+        <div class="ticker-close-btn" onclick="closeJackpotTicker()">
+            <i class="fas fa-times"></i>
+        </div>
+        <span class="blink">🚨 JACKPOT ALERT! 🚨</span>
+        &nbsp;&nbsp;
+        <span>Player "Ahmad****" meraih Rp 500.000.000!</span>
+        &nbsp;&nbsp;
+        <span class="blink">🔥 GILIRAN ANDA SELANJUTNYA! 🔥</span>
     </div>
+    @endif
 
-    <!-- Big Win Animation -->
-    <div class="big-win-animation" id="bigWinAnimation">
-        <div class="big-win-text">BIG WIN!</div>
-        <div class="big-win-amount" id="bigWinAmount"></div>
+    <!-- Sidebar Promo - Hidden on admin and roulette pages -->
+    @if(!request()->routeIs('gambling.admin') && !request()->routeIs('gambling.forceResult') && !request()->routeIs('gambling.roulette'))
+    <div class="sidebar-promo" id="sidebarPromo">
+        <div class="promo-close-btn" onclick="closeSidebarPromo()">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="promo-card animate__animated animate__bounceIn">
+            <h6>🎁 BONUS HARIAN</h6>
+            <p>Dapatkan bonus hingga 50% setiap hari!</p>
+        </div>
+        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 0.5s;">
+            <h6>⚡ CASHBACK</h6>
+            <p>Cashback hingga 10% untuk semua permainan!</p>
+        </div>
+        <div class="promo-card animate__animated animate__bounceIn" style="animation-delay: 1s;">
+            <h6>🏆 TURNOVER</h6>
+            <p>Bonus turnover 0.5% tanpa batas!</p>
+        </div>
     </div>
+    @endif
 
     <div id="app">
         <!-- Promotional Header -->

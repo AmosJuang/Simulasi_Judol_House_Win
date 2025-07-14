@@ -18,23 +18,24 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::middleware('auth')->group(function () {
+// Protected Routes
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    
     // Gambling routes
-    Route::middleware('auth')->group(function () {
-        Route::get('/gambling', [GamblingController::class, 'index'])->name('gambling.index');
-        Route::post('/gambling/play', [GamblingController::class, 'play'])->name('gambling.play');
-        Route::get('/gambling/statistics', [GamblingController::class, 'statistics'])->name('gambling.statistics');
-        Route::get('/gambling/roulette', [GamblingController::class, 'roulette'])->name('gambling.roulette');
-        Route::post('/gambling/roulette/play', [GamblingController::class, 'playRoulette'])->name('gambling.roulette.play');
+    Route::prefix('gambling')->name('gambling.')->group(function () {
+        Route::get('/', [GamblingController::class, 'index'])->name('index');
+        Route::post('/play', [GamblingController::class, 'play'])->name('play');
+        Route::get('/statistics', [GamblingController::class, 'statistics'])->name('statistics');
+        Route::get('/roulette', [GamblingController::class, 'roulette'])->name('roulette');
+        Route::post('/roulette/play', [GamblingController::class, 'playRoulette'])->name('roulette.play');
         
-        // Admin routes
-        Route::middleware('admin')->group(function () {
-            Route::get('/gambling/admin', [GamblingController::class, 'admin'])->name('gambling.admin');
-            Route::get('/gambling/force-result/{user}', [GamblingController::class, 'forceResult'])->name('gambling.forceResult');
-            Route::post('/gambling/update-force-result', [GamblingController::class, 'updateForceResult'])->name('gambling.updateForceResult');
-            Route::post('/gambling/adjust-balance', [GamblingController::class, 'adjustBalance'])->name('gambling.adjustBalance');
+        // Admin only routes
+        Route::middleware(['admin'])->group(function () {
+            Route::get('/admin', [GamblingController::class, 'admin'])->name('admin');
+            Route::get('/admin/force/{user}', [GamblingController::class, 'forceResult'])->name('forceResult');
+            Route::post('/admin/force-result', [GamblingController::class, 'updateForceResult'])->name('updateForceResult');
+            Route::post('/admin/adjust-balance', [GamblingController::class, 'adjustBalance'])->name('adjustBalance');
         });
     });
 });

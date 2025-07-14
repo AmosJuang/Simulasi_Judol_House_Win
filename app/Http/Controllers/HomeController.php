@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+        
+        // Get some statistics for dashboard
+        $totalUsers = User::count();
+        $totalBalance = User::sum('balance');
+        $totalGames = User::sum('total_attempts');
+        $totalWins = User::sum('total_wins');
+        
+        return view('home', compact('user', 'totalUsers', 'totalBalance', 'totalGames', 'totalWins'));
     }
 }
