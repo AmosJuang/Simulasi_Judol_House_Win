@@ -177,14 +177,6 @@ class GamblingController extends Controller
         return $result;
     }
 
-    public function statistics()
-    {
-        $user = Auth::user();
-        $winRate = $user->total_attempts > 0 ? ($user->total_wins / $user->total_attempts) * 100 : 0;
-        
-        return view('gambling.statistics', compact('user', 'winRate'));
-    }
-
     public function admin()
     {
         // Check if user is admin

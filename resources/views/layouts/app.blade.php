@@ -1052,9 +1052,6 @@
                             <a class="nav-link" href="{{ route('gambling.index') }}">
                                 <i class="fas fa-dice"></i> MAIN SEKARANG
                             </a>
-                            <a class="nav-link" href="{{ route('gambling.statistics') }}">
-                                <i class="fas fa-chart-bar"></i> STATISTIK
-                            </a>
                             @if(Auth::user()->is_admin ?? false)
                                 <a class="nav-link" href="{{ route('gambling.admin') }}">
                                     <i class="fas fa-crown"></i> ADMIN

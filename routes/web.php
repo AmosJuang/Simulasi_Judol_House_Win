@@ -26,7 +26,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('gambling')->name('gambling.')->group(function () {
         Route::get('/', [GamblingController::class, 'index'])->name('index');
         Route::post('/play', [GamblingController::class, 'play'])->name('play');
-        Route::get('/statistics', [GamblingController::class, 'statistics'])->name('statistics');
         Route::get('/roulette', [GamblingController::class, 'roulette'])->name('roulette');
         Route::post('/roulette/play', [GamblingController::class, 'playRoulette'])->name('roulette.play');
         

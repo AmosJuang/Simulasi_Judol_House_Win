@@ -238,9 +238,6 @@
                         <a href="{{ route('gambling.index') }}" class="btn btn-casino">
                             <i class="fas fa-play"></i> Main Slot
                         </a>
-                        <a href="{{ route('gambling.statistics') }}" class="btn btn-outline-warning">
-                            <i class="fas fa-chart-bar"></i> Lihat Statistik
-                        </a>
                         @if(Auth::user()->is_admin)
                             <a href="{{ route('gambling.admin') }}" class="btn btn-outline-danger">
                                 <i class="fas fa-cog"></i> Admin Panel
