@@ -47,11 +47,11 @@
     </div>
 
     <!-- Main Roulette Game -->
-    <div class="row">
-        <!-- Roulette Wheel -->
-        <div class="col-lg-8">
-            <div class="roulette-wheel-container">
-                <div class="wheel-container">
+    <div class="row justify-content-center">
+        <!-- Roulette Wheel - Now Centered -->
+        <div class="col-lg-8 col-md-10 col-sm-12 text-center mb-4">
+            <div class="roulette-wheel-container mx-auto">
+                <div class="wheel-container mx-auto">
                     <div class="roulette-wheel" id="rouletteWheel">
                         <!-- Roulette numbers positioned around the wheel - CORRECTED ANGLES -->
                         <div class="wheel-number" style="--angle: 0deg;">0</div>
@@ -124,8 +124,8 @@
             </div>
         </div>
 
-        <!-- Enhanced Betting Panel -->
-        <div class="col-lg-4">
+        <!-- Enhanced Betting Panel - Repositioned Below Wheel -->
+        <div class="col-lg-10 col-md-12">
             <div class="premium-betting-panel">
                 <div class="panel-header">
                     <h4><i class="fas fa-dice-d20"></i> CASINO BETTING ZONE</h4>
@@ -301,7 +301,7 @@
     display: none !important;
 }
 
-/* Roulette Specific Styles - ONLY THESE MODIFIED */
+/* Roulette Specific Styles - UPDATED FOR CENTERING */
 .roulette-container {
     background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     min-height: 100vh;
@@ -313,6 +313,44 @@
     font-size: 2.5rem;
     margin-bottom: 20px;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Center the wheel container */
+.roulette-wheel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.wheel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Dynamic sizing based on screen - smaller for better centering */
+    width: min(80vw, 400px);
+    height: min(80vw, 400px);
+    max-width: 400px;
+    max-height: 400px;
+    margin: 0 auto;
+}
+
+/* Centered bet display */
+.current-bet-display {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Bet amount section with better spacing */
+.bet-amount-section {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .stat-card {
@@ -373,6 +411,8 @@
 .bet-amount-section {
     padding: 25px 20px;
     border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .section-title {
@@ -568,6 +608,9 @@
     margin: 20px;
     box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
     animation: betDisplayGlow 2s ease-in-out infinite alternate;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes betDisplayGlow {
@@ -1386,55 +1429,23 @@
     color: #ccc;
 }
 
-/* Mobile Responsiveness */
+/* Enhanced Mobile Responsiveness for Centered Layout */
 @media (max-width: 768px) {
-    .bet-amount-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-    
-    .bet-amount-card {
-        padding: 12px 8px;
-    }
-    
-    .amount-text {
-        font-size: 0.9rem;
-    }
-    
-    .amount-label {
-        font-size: 0.6rem;
-    }
-    
     .wheel-container {
-        width: 280px;
-        height: 280px;
+        width: min(90vw, 300px);
+        height: min(90vw, 300px);
     }
     
     .roulette-wheel {
-        width: 260px;
-        height: 260px;
+        width: 100%;
+        height: 100%;
     }
 }
 
 @media (max-width: 576px) {
-    .bet-amount-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-    }
-    
-    .bet-options-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    
     .wheel-container {
-        width: 240px;
-        height: 240px;
-    }
-    
-    .roulette-wheel {
-        width: 220px;
-        height: 220px;
+        width: min(95vw, 280px);
+        height: min(95vw, 280px);
     }
 }
 </style>

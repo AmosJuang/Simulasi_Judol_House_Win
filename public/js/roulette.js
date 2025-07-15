@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateWheelResponsiveness();
     });
     
-    // Function to update wheel responsiveness with better positioning
+    // Function to update wheel responsiveness with better positioning for centered layout
     function updateWheelResponsiveness() {
         const wheelContainer = document.querySelector('.wheel-container');
         const wheelNumbers = document.querySelectorAll('.wheel-number');
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const isMobile = window.innerWidth <= 768;
         const isSmallMobile = window.innerWidth <= 576;
         
-        // Calculate radius based on container size for proper arrow alignment
+        // Calculate radius based on container size for proper arrow alignment in centered layout
         let radius;
         if (isSmallMobile) {
             radius = (containerSize / 2) - 25; // Account for number size
@@ -251,10 +251,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Initialize responsive behavior
-    setTimeout(() => {
-        updateWheelResponsiveness();
-    }, 100);
+    // Initialize responsive behavior and recalculate on window resize
+    window.addEventListener('resize', updateWheelResponsiveness);
+    setTimeout(updateWheelResponsiveness, 100);
     
     // Initialize everything
     addSpinButtonEffects();
