@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const degreesPerSegment = 360 / 37;
         
         // Calculate the angle where this number is positioned on the wheel
-        // Numbers are positioned clockwise starting from 0 at the top
         const numberAngle = numberIndex * degreesPerSegment;
         
         console.log(`Number angle: ${numberAngle} degrees`);
@@ -97,16 +96,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Since the wheel rotates clockwise, we need to calculate the opposite rotation
         let targetRotation = (360 - numberAngle) % 360;
         
-        // Add multiple full rotations for spinning effect (5 rotations = 1800 degrees)
-        // Plus a small offset to ensure the arrow points precisely to the number
-        const finalRotation = 1800 + targetRotation;
+        // Add multiple full rotations for spinning effect (minimum 5 rotations = 1800 degrees)
+        // Add some randomness to the base rotations (5-8 rotations)
+        const baseRotations = (5 + Math.random() * 3) * 360;
+        const finalRotation = baseRotations + targetRotation;
         
         console.log(`Target rotation: ${targetRotation}, Final rotation: ${finalRotation}`);
         
         return finalRotation;
     }
     
-    // Enhanced showResult function with precise arrow positioning
+    // Enhanced showResult function with smooth wheel animation
     window.rouletteShowResult = function(data) {
         const wheel = document.getElementById('rouletteWheel');
         
@@ -116,20 +116,60 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log(`Applying rotation: ${finalRotation}deg for winning number: ${data.winning_number}`);
             
-            // Apply the final rotation after the spinning animation
+            // Remove any existing transform and add smooth spinning animation
+            wheel.style.transform = 'rotate(0deg)';
+            wheel.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            
+            // Start the spin animation immediately
             setTimeout(() => {
-                wheel.classList.remove('spinning');
                 wheel.style.transform = `rotate(${finalRotation}deg)`;
-                wheel.style.transition = 'transform 2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-                
-                // Add winning number highlight after wheel stops
-                setTimeout(() => {
-                    highlightWinningNumber(data.winning_number);
-                }, 1000);
-            }, 3800);
+            }, 100);
+            
+            // After animation completes, add winning number highlight
+            setTimeout(() => {
+                highlightWinningNumber(data.winning_number);
+                // Show winning number display with animation
+                showWinningNumberDisplay(data);
+            }, 4200);
         }
         
         // Update balance and stats
+        updateGameStats(data);
+        
+        // Add to recent results after wheel stops
+        setTimeout(() => {
+            addToRecentResults(data.winning_number, data.winning_color);
+        }, 4500);
+    };
+    
+    // Function to show winning number display with smooth animation
+    function showWinningNumberDisplay(data) {
+        const winningNumber = document.getElementById('winningNumber');
+        const numberDisplay = document.getElementById('numberDisplay');
+        const colorDisplay = document.getElementById('colorDisplay');
+        
+        if (numberDisplay) numberDisplay.textContent = data.winning_number;
+        if (colorDisplay) {
+            let colorText = 'HIJAU';
+            if (data.winning_color === 'red') colorText = 'MERAH';
+            else if (data.winning_color === 'black') colorText = 'HITAM';
+            colorDisplay.textContent = colorText;
+        }
+        
+        if (winningNumber) {
+            winningNumber.style.display = 'block';
+            winningNumber.classList.add('animate__animated', 'animate__zoomIn');
+            
+            // Hide winning number after 8 seconds
+            setTimeout(() => {
+                winningNumber.style.display = 'none';
+                winningNumber.classList.remove('animate__animated', 'animate__zoomIn');
+            }, 8000);
+        }
+    }
+    
+    // Function to update game statistics
+    function updateGameStats(data) {
         if (document.getElementById('balance')) {
             document.getElementById('balance').textContent = 'Rp ' + data.new_balance.toLocaleString('id-ID');
         }
@@ -139,39 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('total-wins')) {
             document.getElementById('total-wins').textContent = data.total_wins;
         }
-        
-        // Show winning number display
-        const winningNumber = document.getElementById('winningNumber');
-        const numberDisplay = document.getElementById('numberDisplay');
-        const colorDisplay = document.getElementById('colorDisplay');
-        
-        if (numberDisplay) numberDisplay.textContent = data.winning_number;
-        
-        if (colorDisplay) {
-            let colorText = 'HIJAU';
-            if (data.winning_color === 'red') colorText = 'MERAH';
-            else if (data.winning_color === 'black') colorText = 'HITAM';
-            colorDisplay.textContent = colorText;
-        }
-        
-        if (winningNumber) {
-            setTimeout(() => {
-                winningNumber.style.display = 'block';
-                winningNumber.classList.add('animate__animated', 'animate__zoomIn');
-            }, 4000);
-        }
-        
-        // Add to recent results
-        addToRecentResults(data.winning_number, data.winning_color);
-        
-        // Hide winning number after 8 seconds
-        setTimeout(() => {
-            if (winningNumber) {
-                winningNumber.style.display = 'none';
-                winningNumber.classList.remove('animate__animated', 'animate__zoomIn');
-            }
-        }, 12000);
-    };
+    }
     
     // Function to add results to recent results display
     function addToRecentResults(number, color) {
@@ -210,21 +218,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (parseInt(element.textContent) === winningNumber) {
                 element.classList.add('winning-highlight');
                 
-                // Remove highlight after 3 seconds
+                // Remove highlight after 5 seconds
                 setTimeout(() => {
                     element.classList.remove('winning-highlight');
-                }, 3000);
+                }, 5000);
             }
         });
     }
     
-    // Responsive wheel sizing on window resize
-    window.addEventListener('resize', function() {
-        // Recalculate wheel number positions for different screen sizes
-        updateWheelResponsiveness();
-    });
-    
-    // Function to update wheel responsiveness with better positioning for centered layout
+    // Function to update wheel responsiveness
     function updateWheelResponsiveness() {
         const wheelContainer = document.querySelector('.wheel-container');
         const wheelNumbers = document.querySelectorAll('.wheel-number');
@@ -235,26 +237,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const isMobile = window.innerWidth <= 768;
         const isSmallMobile = window.innerWidth <= 576;
         
-        // Calculate radius based on container size for proper arrow alignment in centered layout
+        // Calculate radius based on container size
         let radius;
         if (isSmallMobile) {
-            radius = (containerSize / 2) - 25; // Account for number size
+            radius = (containerSize / 2) - 25;
         } else if (isMobile) {
             radius = (containerSize / 2) - 30;
         } else {
             radius = (containerSize / 2) - 35;
         }
         
-        // Update transform-origin for each number to ensure proper positioning
+        // Update transform-origin for each number
         wheelNumbers.forEach(number => {
             number.style.transformOrigin = `50% ${radius}px`;
         });
     }
     
-    // Initialize responsive behavior and recalculate on window resize
-    window.addEventListener('resize', updateWheelResponsiveness);
-    setTimeout(updateWheelResponsiveness, 100);
+    // Responsive wheel sizing on window resize
+    window.addEventListener('resize', function() {
+        updateWheelResponsiveness();
+    });
     
     // Initialize everything
     addSpinButtonEffects();
+    updateWheelResponsiveness();
 });
