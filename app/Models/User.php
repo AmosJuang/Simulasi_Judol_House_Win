@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'balance',
@@ -57,5 +59,21 @@ class User extends Authenticatable
             'total_wins' => 'integer',
             'total_losses' => 'integer',
         ];
+    }
+
+    /**
+     * Boot function for the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // Auto-generate a username based on name if not provided
+        static::creating(function ($user) {
+            if (empty($user->username)) {
+                // Generate a slug from the name and add a random string
+                $user->username = Str::slug($user->name) . '-' . Str::random(5);
+            }
+        });
     }
 }
