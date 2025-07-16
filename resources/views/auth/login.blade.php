@@ -34,17 +34,21 @@
                             @endif
 
                             <div class="form-group mb-4">
-                                <label for="email" class="casino-label">
-                                    <i class="fas fa-envelope"></i> Email Anda
+                                <label for="login" class="casino-label">
+                                    <i class="fas fa-user"></i> Username / Email
                                 </label>
-                                <input id="email" type="email" 
-                                       class="casino-input @error('email') is-invalid @enderror" 
-                                       name="email" 
-                                       value="{{ old('email') }}" 
+                                <input id="login" type="text" 
+                                       class="casino-input @error('login') is-invalid @enderror" 
+                                       name="login" 
+                                       value="{{ old('login') }}" 
                                        required 
-                                       autocomplete="email" 
                                        autofocus
-                                       placeholder="Masukkan email Anda">
+                                       placeholder="Masukkan username atau email Anda">
+                                @error('login')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group mb-4">
